@@ -81,17 +81,11 @@ void showEmpInfo(Employee *emp) //Employee *emp, use unique_ptr<Employee> emp, p
     emp->getProject()->setProjectDetail();
 }
 
-void showEmpInfoUnique(const unique_ptr<Employee> &empUnique)
+void showEmpInfoShared(const shared_ptr<Employee> &empShared)
 {
-    cout << "Employee Project Details (unique_ptr)=";
-    empUnique->getProjectUnique()->setProjectDetail();
+    cout << "Employee Project Details (shared_ptr)=";
+    empShared->getProjectShared()->setProjectDetail();
 }
-
-// void showEmpInfoUnique(const unique_ptr<Employee>& empUnique)
-// {
-//     cout << "Employee Project Details (using unique_ptr)=";// << endl;
-//     empUnique->getProjectUnique()->setProjectDetail();
-// }
 
 void Project::setName(const string &name)
 {
@@ -105,12 +99,14 @@ void Project::setProjectDetail() const
 
 void Employee::setProject(Project *prj)
 {
-    m_pProject = prj;   //unique_ptr can not be copied, use move assignment/constr
+    //m_pProject = prj;   //unique_ptr can not be copied, use move assignment/constr
+    m_pProject = prj; //Topic40, shared_ptr (replaced all unique_ptr (from Topic39) -> shared_ptr)
 }
 
-void Employee::setProjectUnique(unique_ptr<Project> &prjUnique)
+void Employee::setProjectShared(shared_ptr<Project> &prjShared)
 {
-    m_pPrejectUnique = std::move(prjUnique);    //!Problem!-> prjUnique looses its state after moving ownship to eUnique1
+    //m_pPrejectUnique = std::move(prjUnique);    //!Problem!-> prjUnique looses its state after moving ownship to eUnique1
+    m_pProjectShared = prjShared;   //shared_ptr
 }
 
 const Project *Employee::getProject() const
@@ -118,7 +114,7 @@ const Project *Employee::getProject() const
     return m_pProject;
 }
 
-const unique_ptr<Project>& Employee::getProjectUnique() const
+const shared_ptr<Project>& Employee::getProjectShared() const
 {
-        return m_pPrejectUnique;
+        return m_pProjectShared;
 }

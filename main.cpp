@@ -1316,16 +1316,52 @@ int main()
 	cout << "Topic, sharing pointer, unique_ptr<>!" << endl;
 	//prjUnique ptr is shared unique_ptr, there is problem with prjUnique which become empty after eUnique1
 	// and later we can not use it, cause as soon as it give to eUnique1, it looses its state.
-	unique_ptr<Project> prjUniqe {new Project{}}; 
-	prjUniqe->setName(" Unique_ptr<>, Video Coder");
-	//unique_ptr<Employee> eUnique1 {new Employee{}};
-	//emp1->setProjectUnique(prjUniqe);
+	cout << "Topic40, smart pointer, shared_ptr<>!" << endl;
+	shared_ptr<Project> prjShared {new Project{}}; 
+	prjShared->setName(" shared_ptr<>, Video Coder");
+	shared_ptr<Employee> eShared1 {new Employee{}};
+	eShared1->setProjectShared(prjShared);
+	shared_ptr<Employee> eShared2 {new Employee{}};
+	eShared2->setProjectShared(prjShared);
+	shared_ptr<Employee> eShared3 {new Employee{}};
+	eShared3->setProjectShared(prjShared);
 	
-
 	// showEmpInfoUnique(eUnique1);
 	// showEmpInfoUnique(eUnique2);
 	// showEmpInfoUnique(eUnique3);
-	prj->setProjectDetail(); // after above problem occurred, code will crash here.
+	prjShared->setProjectDetail(); // after above problem occurred, code will crash here.
+	
+	/*Topic40, smart_ptr : shared_ptr*/
+	/*shared_ptr allows sharing of underline ptr to other objects
+	shared_ptr supports copy (copy assignment)
+	even project wil have multiple employees, creating array/list of unique_ptr of Employee -> won't work
+	when create instance of Employee ->it should be a shared_ptr.
+	inside shared_ptr, ref count is maintained and shared between all copies
+	we can check count of ref created through function
+
+	NOTE: when all shared_ptr are destroyed by destructor, then reference count =0, then undeline pointer gets deleted
+	if one of shared_ptr destroyed, internally it will destroy shared_ptr -> prjShared
+	in destructor of shared_ptr, reference count will be decremented by one.
+	if result will not zero, then destructor won't do anything
+	*/
+	//replace all above unique_ptr -> shared_ptr
+	cout << "shared_ptr, prjShared reference count=" << prjShared.use_count() << endl;
+
+	//shared_ptr contains same method what unique_ptr has
+	if(eShared3)
+	{
+		//valid ptr
+	}
+	else
+	{
+		//not valid ptr
+	}
+	//underline obj can destroy reset() like unique_ptr
+	eShared3.reset();	//this will just decrement the referenec count by 1, but not desrtoy until ref count =0 
+	//below, smart_ptr decrement ref count, if ref count=0, delete underline ptr, otherwise do nothing
+	//take ownership of new ptr Emplyee{}, ref cnt= 1 for eShared2 ptr
+	eShared2.reset(new Employee{});
+
 	/*
 	Topicxx: Microcontroller, bitwise operation, Register set/clear/reset
 	*/

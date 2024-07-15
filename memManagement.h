@@ -35,17 +35,17 @@ class Project
 class Employee
 {
     Project *m_pProject{}; //each emp have project ptr they are working on_> emp will contain ptr to project, can not add destructor
-    unique_ptr<Project> m_pPrejectUnique{}; //unique_ptr<Project>
+    shared_ptr<Project> m_pProjectShared{}; //shared_ptr<Project>
     public:
     //no constr, cause can add the proj details when Emmployee obj is constructed
     //reallife emp can move to other proj as well
     void setProject(Project *prj);
-    void setProjectUnique(unique_ptr<Project> &prjUnique);    //using unique_ptr<Project> &prj
+    void setProjectShared(shared_ptr<Project> &prjShared);    //using shared_ptr<Project> &prj
 
     const Project * getProject()const;
-    const unique_ptr<Project>& getProjectUnique()const;  //using  unique_ptr<Project> 
+    const shared_ptr<Project>& getProjectShared()const;  //using  shared_ptr<Project> 
 };
 
 void showEmpInfo(Employee *emp);
-//void showEmpInfoUnique(unique_ptr<Employee>& empUnique);    //using unique_ptr<Employee> 
-void showEmpInfoUnique(const unique_ptr<Employee> & empUnique);
+
+void showEmpInfoShared(const shared_ptr<Employee> & empShared);
