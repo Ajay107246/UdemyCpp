@@ -49,3 +49,24 @@ class Employee
 void showEmpInfo(Employee *emp);
 
 void showEmpInfoShared(const shared_ptr<Employee> & empShared);
+
+/*Topic41, weak_ptr
+1. drawback of shared_ptr vs 
+destroying obj/ptr won"t work*/
+class Printer
+{
+    int *m_ptrShared{}; //holds int ptr 
+    public:
+    void setPtrValue(int *p)
+    {
+        m_ptrShared = p;
+    }
+    void printPtr()
+    {
+        /*to overcome p16 getting deleted in if() condition
+        comparing with nullptr won't work
+        cause p16= nullptr, but m_ptrShared is diff ptr and won't know about it */
+        cout << "value of m_ptrShared=" << *m_ptrShared << endl;
+    }
+
+};

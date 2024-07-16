@@ -1362,6 +1362,32 @@ int main()
 	//take ownership of new ptr Emplyee{}, ref cnt= 1 for eShared2 ptr
 	eShared2.reset(new Employee{});
 
+	/*Topic:41, Smart_ptr -> weak_ptr*/
+	//drawback of normal and shared_ptr (with respect to reference counter)
+	Printer prn;
+	int numb {};
+	cout<< "Enter the <10 or >10 here=" << endl;
+	cin >> numb;
+	int *p16 = new int{numb};	//allocate mem for the number
+	prn.setPtrValue(p16);	//prn obj assign here, to p16
+	//add few more conditions to *p16
+	if (*p16 > 10)
+	{
+		/* p16 may get deleted here
+		mem addr m_ptrShared has get deleted
+		m_ptrShared points to invalid memory*/
+		delete p16;	// if p16 value is more than 10, we can delete ptr p16
+		p16 = nullptr;	//good practice
+	}
+	/*
+	if *p16 =11, output:
+	value of m_ptrShared=7629248 (junk value)
+	*/
+	prn.printPtr();
+	// below delete() won't do anything, if don't assign nullptr, this will leads to double delete situation
+	delete p16;	
+
+
 	/*
 	Topicxx: Microcontroller, bitwise operation, Register set/clear/reset
 	*/
