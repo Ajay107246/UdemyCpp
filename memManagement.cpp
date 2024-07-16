@@ -118,3 +118,4 @@ const shared_ptr<Project>& Employee::getProjectShared() const
 {
         return m_pProjectShared;
 }
+

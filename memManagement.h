@@ -74,3 +74,34 @@ class Printer
     }
 
 };
+
+/*Topic42, learn smart_ptr -> weak_ptr*/
+class printerWeak
+{
+    weak_ptr<int> m_ptrWeak{}; //Topic42 weak_ptr
+    public:
+    void setPtrValueWeak(weak_ptr<int> p)  //Topic41-2 shared_ptr ptr
+    {
+        m_ptrWeak = p;
+    }
+    void printWeakPtr()
+    {
+        /*we can not directly access undeline ptr using weak_ptr
+        instead we can check if it is expire/not */
+        //print the reference count here 
+        if (m_ptrWeak.expired())
+        {
+            /* shared_ptr is already destroyed 
+               it has already released underline ptr
+            */
+           cout << "Resource is no longer available!" << endl;
+           return ;
+        }
+        //apply lock() on weak_ptr, and it will return shared_ptr, ref count++ by 1
+        auto weakLock = m_ptrWeak.lock();
+        //access the value in undeline address        
+        cout << "value of m_ptrShared=" << *weakLock << endl;
+        cout << "Reference count=" << weakLock.use_count() << endl;
+    }
+};
+

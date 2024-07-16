@@ -306,6 +306,21 @@ void Print(const int &x)
 	cout << "R-value reference: Print(int &&x)" << endl;
 }*/
 
+/*Topic42, learn smart_ptr -> weak_ptr*/
+/*void learnWeakPtr()
+{
+    printerWeak prnWeak;
+    int numWeak{};
+    cout<< "weak_ptr, Enter the <15 or >15 here=" << endl;
+    cin >> numWeak;
+    shared_ptr<int> pPtrShared{new int {numWeak}};
+    prnWeak.setPtrValueWeak(pPtrShared);
+    if (*pPtrShared>15)
+    {
+        pPtrShared = nullptr;
+    }
+    prnWeak.printWeakPtr();
+}*/
 
 int main()
 {
@@ -1364,7 +1379,7 @@ int main()
 
 	/*Topic41, Smart_ptr -> weak_ptr*/
 	//drawback of normal and shared_ptr (with respect to reference counter)
-	cout << "Topic41, smart pointer, weak_ptr<>!" << endl;
+	cout << "Topic41, smart pointer (reference count), shared_ptr<>!" << endl;
 	Printer prn;
 	int numb {};
 	cout<< "Enter the <10 or >10 here=" << endl;
@@ -1410,6 +1425,64 @@ int main()
 	// below delete() won't do anything, if don't assign nullptr, this will leads to double delete situation
 	//delete p16;	//Topic41-1, normal ptr,
 
+	/*Topic42, weak_ptr:
+	e.g.
+	1. shared_ptr<int> pShared{new int{5}} -> mem allocated for the integer (value=5)
+	shared_ptr pShared -> create control block internally, which contains info about mem-block allocated
+	also iit contains, reference count = 1 (for pShared shared_ptr)
+
+	if 
+	2. weak_ptr<int> pWeak = pShared; created, which is always init with shared_ptr
+	internally points to control block, and has info about reference count also.
+	3. pShared.reset(); 	// mem released and shared_ptr destroyed
+	in its destructor reference count will decrement by one.
+	reference cnt =0, weak_ptr points to same control block
+	when ctrl block destroy ? and what is its purpose?
+	ctrl block destroyed when weak_ptr is destroyed
+	that means you can have multiple weak_ptr pointing to same shared_ptr
+	means  multiple weak_ptr pointing to same control blocks
+	
+	internally control block maintain another reference counter for weak_ptr 
+	and ctrl block destroyed when weak cnt =0.
+	assume underline ptr need to access through weak_ptr -> can't access directly
+	instead expire() internal method has to call here.
+	expire() check reference count for weak_ptr 
+	
+	if reference count=0, expire returns TRUE 
+	that means shared_ptr and underline memory no longer available
+	else FALSE -> (ref cnt > 0), and shared_ptr still exist.
+	there for, we can access underline ptr through the weak_ptr
+	we need to use lock(), and lock() will increment reference cnt by one and return shared_ptr
+	possible that other shared_ptr might get destroyed.
+	even if it is destroyed then reference cnt won't become zero.
+	cause we applied lock() using weak_ptr
+	after use of this shared_ptr got from lock() method, its destructor will decrement reference cnt
+	if reference cnt as usual is zero , then it will free the underline memory
+	*/
+
+	//void learnWeakPtr();
+	/*
+	output1:
+	weak_ptr, Enter the <15 or >15 here=14
+	value of m_ptrShared=14
+	Reference count=2
+
+	output2:
+	weak_ptr, Enter the <15 or >15 here=16
+	Resource is no longer available!
+	*/
+	printerWeak prnWeak;
+    int numWeak{};
+    cout<< "weak_ptr, Enter the <15 or >15 here=" << endl;
+    cin >> numWeak;
+    shared_ptr<int> pPtrShared{new int {numWeak}};
+    prnWeak.setPtrValueWeak(pPtrShared);
+    if (*pPtrShared>15)
+    {
+        pPtrShared = nullptr;
+    }
+    prnWeak.printWeakPtr();
+	
 
 	/*
 	Topicxx: Microcontroller, bitwise operation, Register set/clear/reset
