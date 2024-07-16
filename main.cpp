@@ -1362,13 +1362,16 @@ int main()
 	//take ownership of new ptr Emplyee{}, ref cnt= 1 for eShared2 ptr
 	eShared2.reset(new Employee{});
 
-	/*Topic:41, Smart_ptr -> weak_ptr*/
+	/*Topic41, Smart_ptr -> weak_ptr*/
 	//drawback of normal and shared_ptr (with respect to reference counter)
+	cout << "Topic41, smart pointer, weak_ptr<>!" << endl;
 	Printer prn;
 	int numb {};
 	cout<< "Enter the <10 or >10 here=" << endl;
 	cin >> numb;
-	int *p16 = new int{numb};	//allocate mem for the number
+	//int *p16 = new int{numb};	//Topic41-1, allocate mem for the number
+	shared_ptr<int> p16{new int{numb}}; //Topic41-2
+	//Topic41-2, when we pass shared_ptrp16 to setPtrValue -> refernce cnt become 2
 	prn.setPtrValue(p16);	//prn obj assign here, to p16
 	//add few more conditions to *p16
 	if (*p16 > 10)
@@ -1376,16 +1379,36 @@ int main()
 		/* p16 may get deleted here
 		mem addr m_ptrShared has get deleted
 		m_ptrShared points to invalid memory*/
-		delete p16;	// if p16 value is more than 10, we can delete ptr p16
+		//delete p16;	//Topic41-1, normal ptr, if p16 value is more than 10, we can delete ptr p16
+		/*Topic41-1 & 41-2, after returning from setPtrValue -> reference cnt become 
+		//41-2, so underline memory won't get deleted
+		if Printer prn pointer destroyed late, then memory allocated to shared_ptr p16, remained in use.
+		not deleted in below line
+		NOTE --> we need the mechanism where p16 ptr is destroyed, then m_ptrShared ptr should know that 
+		underline memory has been released
+		So, we need weak_ptr to filfil the gap to know prn about underline ptr are destroyed
+		*/
 		p16 = nullptr;	//good practice
 	}
 	/*
-	if *p16 =11, output:
+	//Topic41-1, if *p16 =11, output:
 	value of m_ptrShared=7629248 (junk value)
+	
+	//Topic41-2, with shared_ptr: 
+	Enter the <10 or >10 here=
+	8
+	Reference count=2 <<------
+	value of m_ptrShared=8
+	&&&&&&&&&
+	shared_ptr, prjShared reference count=4
+	Enter the <10 or >10 here=
+	11
+	Reference count=1 <<------
+	value of m_ptrShared=11
 	*/
 	prn.printPtr();
 	// below delete() won't do anything, if don't assign nullptr, this will leads to double delete situation
-	delete p16;	
+	//delete p16;	//Topic41-1, normal ptr,
 
 
 	/*

@@ -55,9 +55,11 @@ void showEmpInfoShared(const shared_ptr<Employee> & empShared);
 destroying obj/ptr won"t work*/
 class Printer
 {
-    int *m_ptrShared{}; //holds int ptr 
+    //int *m_ptrShared{}; //holds int ptr, Topic41-1 normal ptr
+    shared_ptr<int> m_ptrShared{}; //Topic41-2 shared_ptr ptr
     public:
-    void setPtrValue(int *p)
+    //void setPtrValue(int *p)  //Topic41-1 normal ptr
+    void setPtrValue(shared_ptr<int> p)  //Topic41-2 shared_ptr ptr
     {
         m_ptrShared = p;
     }
@@ -66,6 +68,8 @@ class Printer
         /*to overcome p16 getting deleted in if() condition
         comparing with nullptr won't work
         cause p16= nullptr, but m_ptrShared is diff ptr and won't know about it */
+        //print the reference count here 
+        cout << "Reference count=" << m_ptrShared.use_count() << endl;
         cout << "value of m_ptrShared=" << *m_ptrShared << endl;
     }
 
