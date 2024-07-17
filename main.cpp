@@ -1506,10 +1506,24 @@ int main()
 	empCir->m_Circular = Cir;	//init pointer empCir and assign it to Cir
 	Cir->m_empCir = empCir;	//init pointer Cir and assign it to empCir
 
+	/*
+	43-2: Replace raw pointer with shared_ptr
+	delete not needed cause of shared_ptr
 	delete empCir;	//destroy both ptr
 	delete Cir;
+	output:
+	43-2: Replace raw pointer with shared_ptr
+	EmployeeCir()
+	Circular()
+	EmployeeCir()
+	Circular()
+	--> No destructor called, cause memory leak here, here we need to prefer the weak_ptr inside one of class
+	*/
+	shared_ptr<EmployeeCir> empCirShar {new EmployeeCir{}};	//43-2, shared_ptr
+	shared_ptr<Circular> CirShar {new Circular{}};	//43-2, shared_ptr
 
-
+	empCirShar->m_CircularShared = CirShar;
+	CirShar->m_empCirShared = empCirShar;
 
 	/*
 	Topicxx: Microcontroller, bitwise operation, Register set/clear/reset
