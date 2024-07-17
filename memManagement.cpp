@@ -119,3 +119,23 @@ const shared_ptr<Project>& Employee::getProjectShared() const
         return m_pProjectShared;
 }
 
+/*Topic43, Circular Reference*/
+Circular::Circular()
+{
+    cout << "Circular()" << endl;
+}
+
+Circular::~Circular()
+{
+    cout << "~Circular()" << endl;
+}
+
+EmployeeCir::EmployeeCir()
+{
+    cout << "EmployeeCir()" << endl;
+}
+
+EmployeeCir::~EmployeeCir()
+{
+    cout << "~EmployeeCir()" << endl;
+}

@@ -1483,6 +1483,33 @@ int main()
     }
     prnWeak.printWeakPtr();
 	
+	/*Topic43-1, Circular Reference
+	43-1: raw pointer example
+	class EmployeeCir;
+	1. class Circular -> public: EmployeeCir *m_empCircle
+	2. contain constr and Destructor of Circular
+	3. class EmployeeCir -> public: Circular  *m_Cirular
+	4. contain constr and Destructor of EmployeeCir
+	5. main() -> EmployeeCir *empCir, Circular *Cir, 
+	6. empCir->m_Circle = Cir; Cir->m_Circle = empCir;
+	7. delete empCir, Cir.
+	output: both the constr and destructor are call correctly, and there is no mem-leak
+	EmployeeCir()
+	Circular()
+	~EmployeeCir()
+	~Circular()
+	*/
+	//learn about memory leak shared_ptr
+	EmployeeCir *empCir = new EmployeeCir{};	//instance of EmployeeCir
+	Circular *Cir = new Circular{};	//instance of Circular
+
+	empCir->m_Circular = Cir;	//init pointer empCir and assign it to Cir
+	Cir->m_empCir = empCir;	//init pointer Cir and assign it to empCir
+
+	delete empCir;	//destroy both ptr
+	delete Cir;
+
+
 
 	/*
 	Topicxx: Microcontroller, bitwise operation, Register set/clear/reset

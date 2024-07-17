@@ -105,3 +105,20 @@ class printerWeak
     }
 };
 
+/*Topic43, Circular Reference*/
+class EmployeeCir;
+class Circular
+{
+    public:
+    EmployeeCir *m_empCir;
+    Circular();
+    ~Circular();
+};
+
+class EmployeeCir
+{
+    public:
+    Circular *m_Circular;
+    EmployeeCir();
+    ~EmployeeCir();
+};
