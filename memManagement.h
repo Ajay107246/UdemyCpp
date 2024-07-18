@@ -121,6 +121,7 @@ class EmployeeCir
     public:
     Circular *m_Circular;   //43-1, raw pointer 
     shared_ptr<Circular> m_CircularShared; //43-2, shared_ptr, ref. cnt= 1
+    weak_ptr<Circular> m_CircularWeak; //43-3, shared_ptr, ref. cnt= 1
     EmployeeCir();
     ~EmployeeCir();
 };

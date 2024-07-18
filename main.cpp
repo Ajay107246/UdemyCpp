@@ -1599,12 +1599,49 @@ int main()
 	after one ptr from class destryed , remained ref. cnt= 1
 	this cause memory leak
 	*/  
-	empCirShar->m_CircularShared = CirShar;	
-	CirShar->m_empCirShared = empCirShar;	//43-2, shared_ptr, ref. cnt= 2, underline memory is not release
+	//empCirShar->m_CircularShared = CirShar;	
+	//CirShar->m_empCirShared = empCirShar;	//43-2, shared_ptr, ref. cnt= 2, underline memory is not release
 
 	/*
-	43-3: Replace shared_ptr pointer with weak_ptr
+	43-3: Replace shared_ptr pointer with 
+	1. instance of shared_ptr<EmployeeCir> m_empCirShared;
+	2. instance of Circular *m_Circular;
+	3. both smart_ptr has reference count=1 each
+	4. Circular *m_Circular assign into the EmployeeCir -> weak pointer -> weak_ptr<Circular> m_CircularShared;
+	5. weak_ptr<Circular> m_CircularShared; -> not increment the ref counter
+	6. when use of methods from weak_ptr -> m_CircularShared inside EmployeeCir class,
+	7. need to check if weak_ptr is expired /not
+	8. if not expire, then apply/use lock().
+	9. then use the method
+	10. instance of shared_ptr<EmployeeCir> m_empCirShared; -> inside Circular class, -> ++1, reference count 
+	11. reference count =2 for EmployeeCir
+	12. how it will solve the porblem?
+	13. at end of scope, obj of EmployeeCir is destroyed -> reference count -1/ which is become =1
+	14. then weak_ptr<Circular> m_CircularShared destroyed, become =0
+	15. this will call delete for undeline ptr
+	16. Circular ptr will get deleted, then obj is destroyed
+	17. then delete will be invoke on EmployeeCir ptr
+	18. so there are no memory leak
+
+	NOTE: you can use weak_ptr in either one of / both class
+
+	output:
+	Topic43-2, learn Circular reference - shared_ptr (memory leak, with no destructor call)
+	EmployeeCir()
+	Circular()
+	Topic43-3, learn Circular reference - weak_ptr, shared_ptr (No memory leak)
+
+	NOTE: destructor called at end of main()
+	TopicLast, atexit:
+	!End of Main()!
+	~Circular()
+	~EmployeeCir()
 	*/
+	//comment out previous call to pointers 
+	//since it will not allow to print together with below calls
+	cout << "Topic43-3, learn Circular reference - weak_ptr, shared_ptr (No memory leak)" << endl;
+	empCirShar->m_CircularWeak = CirShar;	
+	CirShar->m_empCirShared = empCirShar;
 
 
 
