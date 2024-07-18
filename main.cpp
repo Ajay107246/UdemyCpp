@@ -19,6 +19,7 @@
 #include <cstdio>
 #include <typeinfo>
 #include <bitset>
+#include <cstdlib>
 
 //user defined headers
 #include "classesObjects.h"
@@ -26,6 +27,7 @@
 //#include "moveSemantic.h"	//error: segmentation fault at *m_pMoveInt
 #include "moveFuntion.h"
 #include "memManagement.h"	//Topic27, mem-mangt, smart-ptr
+
 
 
 //Topic18: inline function: MACRO
@@ -377,6 +379,94 @@ void learnWeakPtr(printerWeak* prnWeak, int numWeak)
         pPtrShared = nullptr;
     }
     prnWeak->printWeakPtr();
+}
+
+/*Topic44, deleter, custom deleter, function object*/
+struct Free{
+	//everything will be public, can even use class
+	void operator()(int *p)
+	{
+		free(p);
+		cout << "pointer freed from custom deleter, Function object!" << endl;
+	}
+	//how to invoke deleter, checkout main function topic44
+};
+
+/*Topic44, deleter, custom deleter, function object*/
+void MallocFree(int *p)
+{
+	free(p);
+	cout << "pointer is freed from custom deleter function!" << endl;
+}
+
+void Unique_ptrDeleter()
+{
+	unique_ptr<int> p17{(int *) malloc(4)};
+	*p17 = 200;
+   	cout << "\nunique_ptr Deleter, p17=" << *p17 << endl;	//undefined behavior
+	/*
+	6. above code might end with undefined behavior while managing file stream ptr/handler
+	7. resources won't release properly, cause it will delete but not function that will close stream
+	8. e.g. we need to manage resource: (int *) malloc(4)
+	9. can create custom deleter, which can be global fuction, function object, / lambda expression / any callable
+	10. function object: simple function that has a state
+	11. fun'obj can created by overloading function call operator
+	12. see above main()  
+
+	output:
+	unique_ptr with custom deleter, value for *p18=150
+	~~~~~
+	TopicLast, atexit:
+	!End of Main()!
+	pointer freed!
+
+	13. we also function as custom deleter
+	*/
+	//smart_ptr with custom deleter function objects
+	//recommend this, when don't contains any attributes
+	unique_ptr<int, Free> p18{(int*) malloc(4), Free{}};	// <xx, Free> -> type of delter, Free{} -> obj of this class 
+	*p18=150;
+	cout << "unique_ptr with custom deleter function Object, value for *p18=" << *p18 << endl;
+
+	unique_ptr<int, void(*)(int*)> p19{(int*) malloc(4), MallocFree};	//type of function ptr -> <xx, void(*)(int*)>; type address of funciton -> MallocFree}
+	/* custom deleter function :
+	this will increase the sizeof unique_ptr object
+	to avoid this prefer use of function obj -> struct Free{};
+
+	output:
+	unique_ptr with custom deleter function, value for *p19=175
+
+	!End of Main()!
+	pointer is freed from custom deleter function!
+
+	OR
+	Topic44, Deleter, p17=200
+	unique_ptr with custom deleter -> fun Obj, value for *p18=150
+	unique_ptr with custom deleter function, value for *p19=175
+	pointer is freed from custom deleter function!
+	pointer freed from custom deleter, Function object!
+	*/
+	*p19 = 175;
+	cout << "unique_ptr with custom deleter function, value for *p19=" << *p19 << endl;
+
+}
+
+void Shared_ptrDeleter()
+{
+	shared_ptr<int> p20{(int*) malloc(4), Free{}};	//no need to mentioned type of deleter
+	*p20 = 250;
+	cout << "\nshared_ptr with custom deleter function object, value for *p20=" << *p20 << endl;
+
+	shared_ptr<int> p21{(int*) malloc(4), MallocFree};		//no need to mentioned type of deleter as template arg	
+	*p21 = 275;
+	cout << "shared_ptr with custom deleter function, value for *p21=" << *p21 << endl;
+
+	/* output:
+	shared_ptr with custom deleter function object, value for *p20=250
+	shared_ptr with custom deleter function, value for *p21=275
+	pointer is freed from custom deleter function!
+	pointer freed from custom deleter, Function object!
+	*/
 }
 
 int main()
@@ -1643,6 +1733,18 @@ int main()
 	empCirShar->m_CircularWeak = CirShar;	
 	CirShar->m_empCirShared = empCirShar;
 
+	/*Topic44, Deleter
+	1. malloc, new -> cals free() and delete to free the memory or resources
+	2. smart_ptr calls deleter while release resources automatically
+	3. deleter is callback that releases a resource
+	4. if there is need to delete different kind of resources, then user-defined deleter should be used
+	5. deleter can be any kidn of callable
+
+	you can use smart_ptr to manage any kind of resource, that cannot be released by simple delete call
+	*/
+	cout << "Topic44, Learn custom deleter function/obj. , with unique_ptr & shared_ptr" << endl;
+	Unique_ptrDeleter();
+	Shared_ptrDeleter();	//no need to mentioned type of deleter in template argument in shared_ptr<int>
 
 
 	/*
