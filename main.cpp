@@ -1747,6 +1747,39 @@ int main()
 	Shared_ptrDeleter();	//no need to mentioned type of deleter in template argument in shared_ptr<int>
 
 
+	/*Topic45, Dynamic Array using smart_ptr
+	1. unique_ptr calls default deletem and not delete subscript [5]{} 
+	2. this leafs to undefined behavior
+	3. using smart_ptr -> cannot directly access the elements of dynamic array using array syntax
+	4. p22[0] = 10; -> cannot be used, cause this operator doesn't provided by unique_ptr
+	5. possible to acces p22.get()[0] = 10;
+	6. same thing applicable to shared_ptr
+
+	7. so, don't use  a dynamic array with smart_ptr, cause default deleter will call delete
+	8. but writing custom deleter is possible, 
+	but it will increase the code size without benefits of subscript operator -> []
+	solution -> 
+	10. to use partial specialization of unique_ptr for array types
+
+	*/
+	//unique_ptr<int> *p22{new int[5]{1,2,3,4,5}}; //calls default deletem and not delete subscript [5]{}, indivual elements not accessable
+	unique_ptr<int[]> *p22{new int[5]{1,2,3,4,5}};	// use subscript []]operator to get access for indivual arr elements, p22[0]
+	p22[2]= 6; //possible cause of <xxx[]> inside unique_ptr, calls correct deletor
+	
+	//specialization and operator added in c++17
+	//may not work with C++11/14 std
+	shared_ptr<int[]> *p23{new int[5]{1,2,3,4,5}};	
+	p23[1]= 5;
+
+	/*note: 
+	1. ideally to avoide creating dynamic array like above
+	2. use container (grow at runtime, e.g. vector<int>, automatically manage growth of array)
+	3. if need to create a fix size dynamic array & 
+	no need to deal with memory management, use shared_ptr, and unique_ptr
+
+	*/
+
+
 	/*
 	Topicxx: Microcontroller, bitwise operation, Register set/clear/reset
 	*/
