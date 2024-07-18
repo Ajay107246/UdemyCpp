@@ -321,6 +321,63 @@ void Print(const int &x)
     }
     prnWeak.printWeakPtr();
 }*/
+/*learn shared_ptr Drawback with reference count not becoming = 0*/
+void learnSharedPtrDrawback(Printer* prn, int numb)
+{
+	//int *p16 = new int{numb};	//Topic41-1, allocate mem for the number
+	shared_ptr<int> p16{new int{numb}}; //Topic41-2
+	//Topic41-2, when we pass shared_ptrp16 to setPtrValue -> refernce cnt become 2
+	prn->setPtrValue(p16);	//prn obj assign here, to p16
+	//add few more conditions to *p16
+	if (*p16 > 10)
+	{
+		/* p16 may get deleted here
+		mem addr m_ptrShared has get deleted
+		m_ptrShared points to invalid memory*/
+		//delete p16;	//Topic41-1, normal ptr, if p16 value is more than 10, we can delete ptr p16
+		/*Topic41-1 & 41-2, after returning from setPtrValue -> reference cnt become 
+		//41-2, so underline memory won't get deleted
+		if Printer prn pointer destroyed late, then memory allocated to shared_ptr p16, remained in use.
+		not deleted in below line
+		NOTE --> we need the mechanism where p16 ptr is destroyed, then m_ptrShared ptr should know that 
+		underline memory has been released
+		So, we need weak_ptr to filfil the gap to know prn about underline ptr are destroyed
+		*/
+		p16 = nullptr;	//good practice
+	}
+	/*
+	//Topic41-1, if *p16 =11, output:
+	value of m_ptrShared=7629248 (junk value)
+	
+	//Topic41-2, with shared_ptr: 
+	Enter the <10 or >10 here=
+	8
+	Reference count=2 <<------
+	value of m_ptrShared=8
+	&&&&&&&&&
+	shared_ptr, prjShared reference count=4
+	Enter the <10 or >10 here=
+	11
+	Reference count=1 <<------
+	value of m_ptrShared=11
+	*/
+	prn->printPtr();
+	// below delete() won't do anything, if don't assign nullptr, this will leads to double delete situation
+	//delete p16;	//Topic41-1, normal ptr,
+}
+
+/*Topic42, learn smart_ptr -> weak_ptr (w.r.t. to benefits of refernce count)*/
+void learnWeakPtr(printerWeak* prnWeak, int numWeak)
+{
+	cout << "numWeak to check availble/valid or not=" << numWeak << endl;
+	shared_ptr<int> pPtrShared{new int {numWeak}};
+    prnWeak->setPtrValueWeak(pPtrShared);
+    if (*pPtrShared>15)
+    {
+        pPtrShared = nullptr;
+    }
+    prnWeak->printWeakPtr();
+}
 
 int main()
 {
@@ -1379,51 +1436,58 @@ int main()
 
 	/*Topic41, Smart_ptr -> weak_ptr*/
 	//drawback of normal and shared_ptr (with respect to reference counter)
-	cout << "Topic41, smart pointer (reference count), shared_ptr<>!" << endl;
+	cout << "Topic41-2, smart pointer (drawback reference count), shared_ptr<>!" << endl;
 	Printer prn;
-	int numb {};
+	int numberChk {};
 	cout<< "Enter the <10 or >10 here=" << endl;
-	cin >> numb;
+	//cin >> numb;
+	numberChk = 9;
+	learnSharedPtrDrawback(&prn, numberChk);
+	numberChk = 11;
+	learnSharedPtrDrawback(&prn, numberChk);
+
+	/*
 	//int *p16 = new int{numb};	//Topic41-1, allocate mem for the number
 	shared_ptr<int> p16{new int{numb}}; //Topic41-2
-	//Topic41-2, when we pass shared_ptrp16 to setPtrValue -> refernce cnt become 2
+	//Topic41-2, when we pass shared_ptr p16 to setPtrValue -> refernce cnt become 2
 	prn.setPtrValue(p16);	//prn obj assign here, to p16
 	//add few more conditions to *p16
 	if (*p16 > 10)
 	{
-		/* p16 may get deleted here
-		mem addr m_ptrShared has get deleted
-		m_ptrShared points to invalid memory*/
-		//delete p16;	//Topic41-1, normal ptr, if p16 value is more than 10, we can delete ptr p16
-		/*Topic41-1 & 41-2, after returning from setPtrValue -> reference cnt become 
-		//41-2, so underline memory won't get deleted
-		if Printer prn pointer destroyed late, then memory allocated to shared_ptr p16, remained in use.
-		not deleted in below line
-		NOTE --> we need the mechanism where p16 ptr is destroyed, then m_ptrShared ptr should know that 
-		underline memory has been released
-		So, we need weak_ptr to filfil the gap to know prn about underline ptr are destroyed
-		*/
+		//  p16 may get deleted here
+		// mem addr m_ptrShared has get deleted
+		// m_ptrShared points to invalid memory
+		// //delete p16;	//Topic41-1, normal ptr, if p16 value is more than 10, we can delete ptr p16
+		// Topic41-1 & 41-2, after returning from setPtrValue -> reference cnt become 
+		// //41-2, so underline memory won't get deleted
+		// if Printer prn pointer destroyed late, then memory allocated to shared_ptr p16, remained in use.
+		// not deleted in below line
+		// NOTE --> we need the mechanism where p16 ptr is destroyed, then m_ptrShared ptr should know that 
+		// underline memory has been released
+		// So, we need weak_ptr to filfil the gap to know prn about underline ptr are destroyed
+		
 		p16 = nullptr;	//good practice
 	}
-	/*
-	//Topic41-1, if *p16 =11, output:
-	value of m_ptrShared=7629248 (junk value)
 	
-	//Topic41-2, with shared_ptr: 
-	Enter the <10 or >10 here=
-	8
-	Reference count=2 <<------
-	value of m_ptrShared=8
-	&&&&&&&&&
-	shared_ptr, prjShared reference count=4
-	Enter the <10 or >10 here=
-	11
-	Reference count=1 <<------
-	value of m_ptrShared=11
-	*/
+	// //Topic41-1, if *p16 =11, output:
+	// value of m_ptrShared=7629248 (junk value)
+	
+	// //Topic41-2, with shared_ptr: 
+	// Enter the <10 or >10 here=
+	// 8
+	// Reference count=2 <<------
+	// value of m_ptrShared=8
+	// &&&&&&&&&
+	// shared_ptr, prjShared reference count=4
+	// Enter the <10 or >10 here=
+	// 11
+	// Reference count=1 <<------
+	// value of m_ptrShared=11
+	
 	prn.printPtr();
 	// below delete() won't do anything, if don't assign nullptr, this will leads to double delete situation
 	//delete p16;	//Topic41-1, normal ptr,
+	*/
 
 	/*Topic42, weak_ptr:
 	e.g.
@@ -1473,15 +1537,22 @@ int main()
 	*/
 	printerWeak prnWeak;
     int numWeak{};
-    cout<< "weak_ptr, Enter the <15 or >15 here=" << endl;
-    cin >> numWeak;
-    shared_ptr<int> pPtrShared{new int {numWeak}};
+    cout<< "\nTopic42,weak_ptr, input <15 or >15 here=" << endl;
+    //cin >> numWeak;
+	/*
+	<int> pPtrShared{new int {numWeak}};
     prnWeak.setPtrValueWeak(pPtrShared);
     if (*pPtrShared>15)
     {
         pPtrShared = nullptr;
     }
     prnWeak.printWeakPtr();
+	*/
+	numWeak = 16;
+	learnWeakPtr(&prnWeak, numWeak);
+	numWeak = 14;
+	learnWeakPtr(&prnWeak, numWeak);
+	
 	
 	/*Topic43-1, Circular Reference
 	43-1: raw pointer example
@@ -1500,6 +1571,7 @@ int main()
 	~Circular()
 	*/
 	//learn about memory leak shared_ptr
+	cout << "\nTopic43-1, learn Circular reference - raw _ptr" << endl;
 	EmployeeCir *empCir = new EmployeeCir{};	//instance of EmployeeCir
 	Circular *Cir = new Circular{};	//instance of Circular
 
@@ -1519,11 +1591,22 @@ int main()
 	Circular()
 	--> No destructor called, cause memory leak here, here we need to prefer the weak_ptr inside one of class
 	*/
+	cout << "Topic43-2, learn Circular reference - shared_ptr (memory leak, with no destructor call)" << endl;
 	shared_ptr<EmployeeCir> empCirShar {new EmployeeCir{}};	//43-2, shared_ptr
 	shared_ptr<Circular> CirShar {new Circular{}};	//43-2, shared_ptr
 
-	empCirShar->m_CircularShared = CirShar;
-	CirShar->m_empCirShared = empCirShar;
+	/*43-2, shared_ptr, ref. cnt= 2, underline memory is not release
+	after one ptr from class destryed , remained ref. cnt= 1
+	this cause memory leak
+	*/  
+	empCirShar->m_CircularShared = CirShar;	
+	CirShar->m_empCirShared = empCirShar;	//43-2, shared_ptr, ref. cnt= 2, underline memory is not release
+
+	/*
+	43-3: Replace shared_ptr pointer with weak_ptr
+	*/
+
+
 
 	/*
 	Topicxx: Microcontroller, bitwise operation, Register set/clear/reset

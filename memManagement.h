@@ -111,7 +111,7 @@ class Circular
 {
     public:
     EmployeeCir *m_empCir;  //43-1, raw ptr
-    shared_ptr<EmployeeCir> m_empCirShared; //43-2, shared_ptr 
+    shared_ptr<EmployeeCir> m_empCirShared; //43-2, shared_ptr, ref. cnt= 1 
     Circular();
     ~Circular();
 };
@@ -120,7 +120,7 @@ class EmployeeCir
 {
     public:
     Circular *m_Circular;   //43-1, raw pointer 
-    shared_ptr<Circular> m_CircularShared; //43-2, shared_ptr
+    shared_ptr<Circular> m_CircularShared; //43-2, shared_ptr, ref. cnt= 1
     EmployeeCir();
     ~EmployeeCir();
 };
