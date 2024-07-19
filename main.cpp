@@ -451,6 +451,8 @@ void Unique_ptrDeleter()
 
 }
 
+/**/
+
 void Shared_ptrDeleter()
 {
 	shared_ptr<int> p20{(int*) malloc(4), Free{}};	//no need to mentioned type of deleter
@@ -468,6 +470,16 @@ void Shared_ptrDeleter()
 	pointer freed from custom deleter, Function object!
 	*/
 }
+
+/*Topic46, move function to allocate memory while using smart_ptr*/
+class MoveAllocMem
+{
+	public:
+	MoveAllocMem(int x, int y)
+	{
+		cout << "Move() function with smart_ptr: mem allocation! "<< x << "," << y << endl;
+	}
+};
 
 int main()
 {
@@ -1762,22 +1774,65 @@ int main()
 	10. to use partial specialization of unique_ptr for array types
 
 	*/
-	//unique_ptr<int> *p22{new int[5]{1,2,3,4,5}}; //calls default deletem and not delete subscript [5]{}, indivual elements not accessable
-	unique_ptr<int[]> *p22{new int[5]{1,2,3,4,5}};	// use subscript []]operator to get access for indivual arr elements, p22[0]
-	p22[2]= 6; //possible cause of <xxx[]> inside unique_ptr, calls correct deletor
+	//unique_ptr<int> *p22{new int[5]{1,2,3,4,5}}; //calls default deleter and not delete subscript [5]{}, indivual elements not accessable
+	//error: cannot convert 'int*' to 'std::unique_ptr<int []>*' in initialization
+	//unique_ptr<int[]> *p22{new int[5]{1,2,3,4,5}};	// use subscript []]operator to get access for indivual arr elements, p22[0]
+	//error: no match for 'operator=' (operand types are 'std::unique_ptr<int []>' and 'int')
+	//p22[2]= 6; //possible cause of <xxx[]> inside unique_ptr, calls correct deletor
 	
 	//specialization and operator added in c++17
 	//may not work with C++11/14 std
-	shared_ptr<int[]> *p23{new int[5]{1,2,3,4,5}};	
-	p23[1]= 5;
+	//cannot convert 'int*' to 'std::shared_ptr<int []>*' in initialization
+	//<int[]> *p23{new int[5]{1,2,3,4,5}};	
+	//no match for 'operator=' (operand types are 'std::shared_ptr<int []>' and 'int')
+	//p23[1]= 5;
 
 	/*note: 
 	1. ideally to avoide creating dynamic array like above
 	2. use container (grow at runtime, e.g. vector<int>, automatically manage growth of array)
 	3. if need to create a fix size dynamic array & 
 	no need to deal with memory management, use shared_ptr, and unique_ptr
+	*/
+
+	/*Topic46, make function:
+	1. modern c++ discouranges manual memory management
+	2. avoid using new and delete in our code
+	3. for smart_ptr, new is usede to allocate memory, and can be avoided
+	4. smart_ptr provide a global function that 
+	smart_ptr can construct without having manually allocate a memory for undelying resources
+	5. those global functions are make() functions for shared_ptr, and unique_ptr
+	6. make_unique() factory function, it creates instance of class
+	7. accepts arbitary type and number of args.
+	8. its a function template and must specify type of object to be construct
+	9. no need to suse new operator in code,
+	10. can be use to construct dynamic arrays
+	11. 
 
 	*/
+
+	//unique_ptr<int> p24{new int{5}}; //can be avoided cause manually allocation of memory
+	cout << "\nTopic46, Learn move() function, with unique_ptr & shared_ptr!" << endl;
+	auto p25 = make_unique<int>(5);
+	auto p26 = make_unique<MoveAllocMem>(3, 7); //MoveAllocMem -> type, (3,7)-> args pass to constr to MoveAllocMem
+
+	auto pArr = make_unique<int[]>(5);	// [] -> empty subscript, and (6) size of array
+	pArr[0] =2;
+
+	/*can be done for shared_ptr -> make_shared -> C++20 std
+	shared_ptr implemented differently than unique_ptr
+	it has store more info regarding underlying ptr inside control blocks.
+	allocate mem using one new call
+	during destruction, there is only one delete call for underlying resource & contro block
+	saves multiple calls to new and delete operator (not applicable to make_unique:does not store any info except ptr)
+	*/
+
+	auto p27 = make_shared<int>(5);
+	auto p28 = make_shared<MoveAllocMem>(3, 7); //MoveAllocMem -> type, (3,7)-> args pass to constr to MoveAllocMem
+
+	//error: no matching function for call to 'make_shared<int []>(int)'
+	//auto pArrShare = make_shared<int[]>(5);	// [] -> empty subscript, and (6) size of array
+	//pArr[0] =2;
+
 
 
 	/*
