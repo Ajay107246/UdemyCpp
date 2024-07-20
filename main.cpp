@@ -481,6 +481,21 @@ class MoveAllocMem
 	}
 };
 
+/*Topic47, Raw char[]/ string*/
+const char * Combine(const char * pFirstChar,const char *pSecondChar)
+{
+	//char combineStr[20];
+	char *combineStr = new char[strlen(pFirstChar) + strlen(pSecondChar)];
+	strcpy(combineStr, pFirstChar);
+	strcat(combineStr, pSecondChar);
+
+	return combineStr;	
+	/* warning: 
+	the scope of combineStr is limited to this combine funciton only 
+	no guarantee it will return the combineStr to inside main...
+	*/
+}
+
 int main()
 {
 	
@@ -1833,7 +1848,36 @@ int main()
 	//auto pArrShare = make_shared<int[]>(5);	// [] -> empty subscript, and (6) size of array
 	//pArr[0] =2;
 
+	/*Topic47, 47-1, Raw string*/
+	char firstChar[10] = "Ajay";
+	char secondChar[10] ="Shimpi";
+	char finalString[20];
+	//cout << "Enter First and Second character string (<10 char):" << endl;
+	//cin.getline(firstChar, 10);
+	//cin.getline(secondChar, 10);
 
+	// return value from Combine has limited scope to itself, and then no value will be return
+	/*
+	1. const char *pFinalName = new char[strlen(firstChar) + strlen(secondChar)];
+	2. here normal char string is null terminated, and required 1 extra byte here.
+	3. while allocating pFinalName -> this takes without null char size of 1 byte
+	4. there will cause buffer overflow
+	5. and without extra 1 byte for null char, this will crash the program in runtime
+	6. detects memory has been correpted
+	7. so, const char *pFinalName = new char[strlen(firstChar) + strlen(secondChar)+ 1];
+	8. this is error prone and cause run time problem.
+	9. we need choose std::string librery provided in C++
+	*/
+	const char *pFinalName = Combine(firstChar, secondChar);	
+	
+	strcpy(finalString, firstChar);
+	strcat(finalString, secondChar);
+
+	cout << "\nTopic47-1, raw char string=" << finalString << endl;
+	cout << "\nTopic47-1, raw char string with ptr =" << pFinalName << endl;
+	delete[] pFinalName;
+
+	
 
 	/*
 	Topicxx: Microcontroller, bitwise operation, Register set/clear/reset
