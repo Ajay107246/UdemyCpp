@@ -20,6 +20,10 @@
 #include <typeinfo>
 #include <bitset>
 #include <cstdlib>
+#include <string>
+//#include <ctype.h>
+#include <cctype>
+#include <sstream>
 
 //user defined headers
 #include "classesObjects.h"
@@ -494,6 +498,20 @@ const char * Combine(const char * pFirstChar,const char *pSecondChar)
 	the scope of combineStr is limited to this combine funciton only 
 	no guarantee it will return the combineStr to inside main...
 	*/
+}
+
+void toUpperCase(char* str20){
+	for(int i = 0; str20[i]; ++i)
+	{
+		str20[i] = toupper(str20[i]);
+	}
+}
+
+void toLowerCase(char* str20){
+	for(int i = 0; i<strlen(str20); ++i)
+	{
+		str20[i] = tolower(str20[i]);
+	}
 }
 
 int main()
@@ -1874,10 +1892,188 @@ int main()
 	strcat(finalString, secondChar);
 
 	cout << "\nTopic47-1, raw char string=" << finalString << endl;
-	cout << "\nTopic47-1, raw char string with ptr =" << pFinalName << endl;
+	cout << "Topic47-1, raw char string with ptr =" << pFinalName << endl;
 	delete[] pFinalName;
 
+	/*Topic47-2: String class
+	std::string -> memory allocation deallocation automatically done by string class
+	*/
+	string str11 = "Hello";
+	string str12 = ("NIce");
+	string str13 {"World"};
+	string str14;
+	str14 = "!";
+
+	cout << "\nTopic47-2, string library!" << endl;
+	cout << "All strings="<< str11 << " " << str12 << " " << str13 << str14 << endl;
+
+	string str15 = str11 + " " + str12 + " " + str13;
+	cout << "str15= " << str15 << endl;
+
+	char ch = str12[1];
+	cout << "ch=str12[1]:" << ch << endl;
+	cout << "before, str12=" << ch << endl;
+	str12[1] = 'i';	// Modifying the second character of NIce -> Nice
+	cout << "after, str12[1] = 'i':" << str12 << endl;
+
+	size_t pos = str15.find("Nice");	//finding substring with its position
+
+	/*
+	Maximum Value: std::string::npos is defined as static const size_t npos = -1;. 
+	Since size_t is an unsigned type, -1 is converted to the largest possible value for size_t12.
+	Usage in Functions: It is often used in functions that deal with 
+	string indices to indicate “until the end of the string” or “no match found.” 
+	Functions like find, rfind, find_first_of, and find_last_of return std::string::npos 
+	when they fail to find the specified substring or character
+	*/
+	if(pos!=string::npos)
+	{
+		cout << "Nice occurance found at: " << pos << endl;	 
+	}
+	else
+	{
+		cout << "Nice is not found!" << endl;
+	}
+	size_t pos2 = str15.find("NIce");
+	if(pos2!=string::npos)
+	{
+		cout << "NIce occurance found at: " << pos2 << endl;	 
+	}
+	else
+	{
+		cout << "NIce is not found!" << endl;
+	}
+	//substring extraction
+	string str16 {"Hello World!"};
+	string str17 = str16.substr(6, 5);
+	cout << "Substring from "<< str16 << " is " << str17 << endl;	 
+
+	cout << "Length of string <" << str16 << "> is " << str16.length() << endl;
+	if(str11 == str12)
+	{
+		cout << str1 <<  " and " << str12 << " are equal." << endl;
+	}
+	else
+	{
+		cout << str11 <<  " and " << str12 << " are not equal." << endl;
+	}
+	cout << "Inserting and erasing an element from string!" << endl;
+	string str18 = ",";
+	//str18 = ',';
+	str15.insert(5, str18);
+	cout << "str15= " << str15 << " after inserting character/string '" << str18 << "'" << endl;
 	
+	//string str19 = str15.c_str();
+	const char* str19 = str15.c_str();
+	cout << "converting " << str15 << " in c_style string using c_str(): " << str19 << endl;
+
+
+	/*
+	output:
+	All strings=Hello NIce World!
+	str15= Hello NIce World
+	ch=str12[1]:I
+	before, str12=I
+	after, str12[1] = 'i':Nice
+	Nice is not found!
+	NIce occurance found at: 6
+	Substring from Hello World! is World
+	Length of string <Hello World!> is 12
+	Hello and Nice are not equal.
+	Inserting and erasing an element from string!
+	str15= Hello, NIce World after inserting character/string ','
+	converting Hello, NIce World in c_style string using c_str(): Hello, NIce World
+	*/
+	char str20[] = "Hello World";
+	toUpperCase(str20);
+	cout << "str20 in upper case: " << str20 << endl;
+	toLowerCase(str20);
+	cout << "str20 in lower case: :" << str20 << endl;
+
+	/* TOpic47-3, formatted string
+	std::stringstream -> R/W
+	std::istringstream -> only read
+	std::ostringstream -> only write
+	*/
+	cout << "Topic47-3, formatted string-> std::stringstream!" << endl;
+	
+	int a5 {3}, a6{7};
+	int sumStream = a5 + a6;
+	stringstream ss;
+	ss << "Sum of " << a5 << " & " << a6 << " is: " << sumStream << endl;
+	//ss return the copy  of buffer as std string object
+	string str21 =  ss.str();
+	cout << "str21, usage of stringstream:\n" << str21 << endl;
+
+	/*
+	this will print as below --->
+	Sum of 3 & 7 is: 10
+	10
+	but it took previous data as well.
+	to avoid or remove old string from ss stringstream 
+	we need to clear this string, using ss.str("")
+	*/
+	ss.str("");	// clear previous data/strings
+	ss << sumStream;	// this will only take value=10, won't append new string on existing string
+	auto sumStream1 = ss.str();	//internally use std::to_string() convert int to string
+	cout << "sumStream1, usage of stringstream:\n" << sumStream1 << endl;
+	//ss.str(""); -> simply clear the string this accept the string while assinging as string to internal buffer
+	
+	/* Extract the integer from string:
+	*/
+	string data1 = "10 11 12 13 str 14 done!";
+	cout << "data1:" << data1 << endl;
+	int a7; //to store the int from abov edata1 string 
+	stringstream extractInt;
+	extractInt.str(data1);
+	/*while (!extractInt.fail())	//fail()-> check for failed bit, set if stringstream fails to read input
+	{
+		extractInt >> a7; //>> returns a ref of stringstream obj itself
+		cout << "extracted INT from string data1=> " << a7 << endl;
+	}
+	output:
+	data1:10 11 12 13 str 14 done!
+	extracted INT from string data1=> 10
+	extracted INT from string data1=> 11
+	extracted INT from string data1=> 12
+	extracted INT from string data1=> 13
+	extracted INT from string data1=> 0
+	*/
+	//instead of doing above condition in while()
+	while (extractInt >> a7)	//fail()-> check for failed bit, set if stringstream fails to read input
+	{
+		cout << "extracted INT from string data1=> " << a7 << endl;
+	}
+	/*output:
+	data1:10 11 12 13 str 14 done!
+	extracted INT from string data1=> 10
+	extracted INT from string data1=> 11
+	extracted INT from string data1=> 12
+	extracted INT from string data1=> 13
+	*/
+
+	/* assignment:
+	The find function in std::string uses a case-sensitive search.
+	Write a function that also performs a case insensitive search. 
+	Use an enum to decide between case-sensitive and case-insensitive search. 
+	The prototype of the function is:
+	enum class Case{SENSITIVE, INSENSITIVE};
+	
+	size_t Find(
+	const std::string &source,         //Source string to be searched
+	const std::string &search_string,  //The string to search for
+	Case searchCase = Case::INSENSITIVE,//Choose case sensitive/insensitive search
+	size_t offset = 0 ) {                //Start the search from this offset
+		//Implementation
+	
+		/*
+		return position of the first character 
+		of the substring, else std::string::npos
+	
+	Note that, we don't have direct write access to the raw string inside std::string.
+	*/
+
+
 
 	/*
 	Topicxx: Microcontroller, bitwise operation, Register set/clear/reset
