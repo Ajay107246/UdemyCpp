@@ -162,7 +162,7 @@ Car::Car(Car &&movObj)
 Car::~Car()
 {
 	--totalCarObj;
-	std::cout << "\n~Car() gets called!" << endl;
+	std::cout << "~Car() gets called!" << endl;
 }
 void Car::fillFuel(float amount)
 {

@@ -24,6 +24,8 @@
 //#include <ctype.h>
 #include <cctype>
 #include <sstream>
+#include <complex>
+#include <chrono>	//for chrono_literals
 
 //user defined headers
 #include "classesObjects.h"
@@ -513,6 +515,67 @@ void toLowerCase(char* str20){
 		str20[i] = tolower(str20[i]);
 	}
 }
+
+/*Topic48, User-defined Literals*/
+class Distance 
+{
+	long double m_kilometers;
+	public:
+	Distance(long double km) :m_kilometers{km}{
+
+	}
+	long double getKm()const
+	{
+		cout << "Meter Reading: " << m_kilometers << " K.M." << endl;
+		return m_kilometers;
+	}
+	void setKm(long double val)
+	{
+		m_kilometers = val;
+	}
+};
+
+/*Topic48, liternals, if distance needs to be printed in miles*/
+Distance operator"" _mi(long double val)
+{
+	return Distance {val * 1.6};
+}
+
+/*Topic48, liternals, if distance needs to be printed in metres*/
+Distance operator"" _metres(long double valMet)
+{
+	return Distance {valMet / 1000};
+}
+
+/*Topic48, Literals , some more examples
+user-defined literals (UDLs) are the way to provide custom literals
+that can make code readable and more expressive
+*/
+constexpr long double operator"" _km(long double valKm){
+	return valKm * 1000;
+}
+constexpr long double operator"" _m(long double valMeter){
+	return valMeter;
+}
+//complex number -> literals
+complex<long double> operator"" _i(long double valComplex){
+	return complex<long double>(0, valComplex);
+}
+//string literals
+string operator"" _s(const char* valString, size_t){
+	return string(valString);
+}
+//UDLs for binary numbers
+unsigned long long operator"" _bin(const char* valBin){
+	unsigned long long result = 0;
+	while(*valBin){
+		result = (result << 1) | (*valBin++ - '0');
+	}
+	return result;
+}
+//UDLs for time duration
+using namespace std::chrono_literals;
+
 
 int main()
 {
@@ -2071,6 +2134,90 @@ int main()
 		of the substring, else std::string::npos
 	
 	Note that, we don't have direct write access to the raw string inside std::string.
+	*/
+
+	/*Topic48, user-defined literals, 
+	1. fixed value that appears directly in code
+	2. differnet types of literals in c++
+	integer, floating points, boolean, char, string
+	3. can be modified through prefix, and suffix
+	14u, 621l, 9.2f, L"wide string"
+	4. C++ allows to define own prefix and suffix for types -> syntactic shortcuts, increase type safety
+	5. Temparature Temp{56.7};
+	6. internally class can store value in celsius
+	7. if we want to store it in fahreinheit, then we can create custom user-defined literals
+	8. Temperature Temp {56.7_F};
+	9. defined function using operator keyword
+	10. <return_type> operator""_ <literal>(<arguments>)
+	11. operator"": defines a literal operator function
+	12. <return_type>: can be any type including void
+	13. _<literal>: always start with _(undescore) followed by name
+	14. <arguements>: 
+	int- unsign longlong
+	floating point - long double
+	char - char, wchar_t, char16_t, char32_t
+	string- const char *
+	
+	*/
+	cout << "Topic48, user-defined literals!" << endl;
+	Distance dist{32};
+	long double distKim = dist.getKm();
+	//cout << "\nKm distance= " << distKim << endl;
+
+	/*
+	if we want to return distance in mile instead of km
+	Literal operator will create a object of Distance 
+	which has been init with value while creating object {32.0_mi}  
+	using literals, code can become more expressive and reduce chance of errors
+	*/
+	Distance distMile{32.0_mi};
+	distMile.getKm();
+	Distance distMeter{32500.0_metres};
+	distMeter.getKm();
+
+	long double distanceMeter = 5.0_km + 300.0_m;
+	cout << "1. distanceMeter (str literal)=> " <<  distanceMeter << endl;
+	
+	/* Error: no match for 'operator+' (operand types are 'double' and 'std::complex<long double>')
+	auto complexNum = 3.0 + 4.0_i;
+	cout << "2. Complex complexNum (str literal)=> " <<  complexNum << endl;
+	*/
+	 
+	auto myString = "Hello, This is string literals"_s;
+	cout << "3. myString (str literal)=> " <<  myString << endl;
+
+	auto binValue = 1011_bin;
+	cout << "4. binValue (str literal)=> " <<  binValue  << endl;
+
+	/* Error: 
+	no match for 'operator<<' (operand types are 'std::basic_ostream<char>' and 
+	'std::chrono::duration<long long int>')
+	auto timeDuration = 10s + 25min;
+	cout << "5. timeDuration (str literal)=> " <<  timeDuration << endl;
+	*/
+
+	/*
+	output:
+	1. distanceMeter (str literal)=> 5300
+	3. myString (str literal)=> Hello, This is string literals
+	4. binValue (str literal)=> 11
+	*/
+
+
+
+	/* 
+	output:
+	Topic48, user-defined literals!
+	Meter Reading: 32 K.M.
+	Meter Reading: 51.2 K.M.
+	Meter Reading: 32.5 K.M. 
+	
+	Important points:
+	1. custom literals should begin with _
+	2. cannot re-define the meaning of in-built literals suffixes
+	3. only following types can be suffixed to make a user-defined literals  
+	usigned long long, long double, const char*, char
+	4. Literal operator functions cannot be member functions 
 	*/
 
 
