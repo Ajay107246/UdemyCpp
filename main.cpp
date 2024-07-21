@@ -26,6 +26,9 @@
 #include <sstream>
 #include <complex>
 #include <chrono>	//for chrono_literals
+#include <initializer_list>
+#include <cassert>
+
 
 //user defined headers
 #include "classesObjects.h"
@@ -595,6 +598,62 @@ constexpr int maxNum(int x, int y)
 		return x;
 	}
 	return y;
+}
+
+/*Topic50, initializer_list, with template class*/
+class Bag
+{
+	int arr5[10];
+	int m_size;
+	public:
+	//constr -> accept initializer_list as arg
+	//this should work with Bag {1,2,3,4};
+	Bag(initializer_list<int> values)
+	{
+		//access elements using iterators
+		assert(values.size() < 10);
+		auto it = values.begin();	// behaves like ptr to array
+		while(it != values.end())
+		{
+			AddvalArr(*it);
+			++it;
+		}
+	}
+	void AddvalArr(int val)
+	{
+		assert(m_size < 10);
+		arr5[m_size++] = val;
+	}
+	void RemoveElement()
+	{
+		--m_size;
+	}
+	//opeartor eubscript->[] overloaded to access elements in array
+	int operator [](int index)	
+	{
+		return arr5[index];
+	}
+	int getSize()const
+	{
+		return m_size;
+	}
+};
+
+/*Topic50, initializer_list used to print simple list*/
+
+void PrintIinitList(initializer_list<int> values)
+{
+	auto it = values.begin();
+	cout << "value in initializer_list=" << endl;
+	// while(it!= values.end())
+	// {
+	// 	cout << *it++ << "\t"; 
+	// }
+	//range based for loop iterators
+	for(auto x: values)
+	{
+		cout << x << "\t";
+	}
 }
 
 int main()
@@ -2292,7 +2351,48 @@ int main()
 	all constexpr variable are const, but not other wat round 
 	*/
 
+	/*Topic50, std::initializer_list
+	1. it is lightwieght proxy object that used to store an array of objects.
+	2. header: <initializer_list>, create a instance of this class
+	3. it is a class template, means need to specify the type of elements.
+	4. initializer_list commonly used with container class, that can hold object of other class
+	5. purpose: init user-defined objects, ilke array is initialized
+	6. constructed automatically from braced list of elements
+	auto, ranged based loop, constr, function
+	7. not a true container but similar behavior
+	8. provides access to its elements through iterator
+	*/
+	cout << "\nTopic50,initializer_list!" << endl;
+	initializer_list<int> data2 = {10,20,30,40,50}; // with auto keyword, brace lilst elements inferred as init list
+	//Bag bg;
+	/*
+	error: runtime error: segmentation fault at assert() / arr5[m_size++] = val; statement
+	Bag bg{1,2,3,4};
+	// bg.AddvalArr(5);
+	// bg.AddvalArr(9);
+	// bg.AddvalArr(1);
+	// bg.AddvalArr(6);
 
+	for(int i=0; i < bg.getSize(); ++i)
+	{
+		cout << "arr4 using class= " << bg[i] << endl;
+	}*/
+	
+	PrintIinitList({1,2,3,4,5});
+	cout << endl;
+	
+	//range based for loop iterators
+	for(auto x: data2)
+	{
+		cout << x << "\t";
+	}
+	/*output:
+	value in initializer_list=
+	1       2       3       4       5
+	
+	10      20      30      40      50
+	*/
+	
 
 	/*
 	Topicxx: Microcontroller, bitwise operation, Register set/clear/reset
