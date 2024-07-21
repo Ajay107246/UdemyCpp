@@ -576,6 +576,26 @@ unsigned long long operator"" _bin(const char* valBin){
 //UDLs for time duration
 using namespace std::chrono_literals;
 
+/*Topic49, constexpr : constant expression*/
+constexpr int getConstexprNumber()
+{
+	return 40;
+}
+
+constexpr int AddValConstr(int x, int y)
+{
+	return x+y;
+}
+//constexpr function can only have one return statement
+//this is relax in C++14, but will not work in earlier c++ version
+constexpr int maxNum(int x, int y)
+{
+	if(x>y)
+	{
+		return x;
+	}
+	return y;
+}
 
 int main()
 {
@@ -2159,7 +2179,7 @@ int main()
 	string- const char *
 	
 	*/
-	cout << "Topic48, user-defined literals!" << endl;
+	cout << "\nTopic48, user-defined literals!" << endl;
 	Distance dist{32};
 	long double distKim = dist.getKm();
 	//cout << "\nKm distance= " << distKim << endl;
@@ -2203,8 +2223,6 @@ int main()
 	4. binValue (str literal)=> 11
 	*/
 
-
-
 	/* 
 	output:
 	Topic48, user-defined literals!
@@ -2218,6 +2236,60 @@ int main()
 	3. only following types can be suffixed to make a user-defined literals  
 	usigned long long, long double, const char*, char
 	4. Literal operator functions cannot be member functions 
+	*/
+
+	/*Topic49, constexpr: constant expressions 
+	1. keyword that represent an expression that is constant
+	2. evaluated at compile time
+	3. keyword applied to a variable declarations or functions
+	4. increse the perfomance of code as computation done at compile time
+	5. constexpr <- keyword
+	6. if function return a value that can computed at compile time
+	   then it can be constexpr <return_type> function()
+	7. such function accept and return only literal type (void and scaler types, class: has constexpr constructor)
+	*/
+	//Behave as constexpr
+	constexpr int iConstexpr = getConstexprNumber();
+	cout << "\nTopic49, constexpr: constant expresssion" << endl;
+	cout << "constexpr i value=> " << iConstexpr << endl;
+	int arr3[iConstexpr];
+	
+	//Behave as constexpr
+	const int iConst = getConstexprNumber();
+	cout << "const iConst value=> " << iConst << endl;
+	int arr4[iConst];
+	
+	//Behave as normal function, this won't work with const experssion function as R-val
+	int iInt = getConstexprNumber();
+	cout << "iInt value=> " << iInt << endl;
+
+	constexpr int sumConstr = AddValConstr(3,7); //work
+	cout << "sumConstr  value=> " << sumConstr << endl;
+	const int num3= 5, num4=4;
+
+	constexpr int maxResult = maxNum(num3, num4);
+	cout << "maxNum value=> " << maxResult << endl;
+
+	/*
+	Rval should always constexpr when used with constexpr L-val
+	should contain only sigle line statement that should return statment
+	error: the value of 'iInt' is not usable in a constant expression
+	*/
+	//constexpr int sumNormal = AddValConstr(iInt,7); //won't work
+
+	/*
+	output:
+	Topic49, constexpr: constant expresssion
+	constexpr i value=> 40
+	const iConst value=> 40
+	iInt value=> 40
+	sumConstr  value=> 10
+	maxNum value=> 5
+	NOTE: literal types
+	void, scaler types (int, float, char), references, etc..
+	initialization of const value can be deffered until runtime 
+	initialization of constexpr variable must be done at compiletime 
+	all constexpr variable are const, but not other wat round 
 	*/
 
 
