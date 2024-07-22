@@ -28,6 +28,7 @@
 #include <chrono>	//for chrono_literals
 #include <initializer_list>
 #include <cassert>
+#include <vector>
 
 
 //user defined headers
@@ -2386,13 +2387,144 @@ int main()
 	{
 		cout << x << "\t";
 	}
+	cout << endl;
+
 	/*output:
 	value in initializer_list=
 	1       2       3       4       5
 	
 	10      20      30      40      50
 	*/
+
+	/*Topic51, Dynamic array std::vector, include <vector>
+	1. can change its size at runtime as per need
+	2. its classs template and can store any type of objects
+	3. 
+
+	*/
+	cout << "\nTopic51, Vector in c++!" << endl;
+	vector<int> data3 {1,2,3};
+	cout << "Vector data: " << endl;
+	for(auto x: data3)
+	{
+		cout << x << "\t";
+	}
+	cout << endl;
+	data3.push_back(4);
+	data3.push_back(5);
+	data3.push_back(6);
+	/*
+	output:
+	Vector data with newly pushed elements:
+	1       2       3       4       5       6
 	
+	with vector.push_back() -> we can add as many elements we wat=nt
+	this will get added at end of existing elements
+	elements will be stored in contiguous memory locations
+	elements can be accessed using subscript [] operator
+	operator which is overloaded for vector class
+
+
+	*/
+	cout << "Vector data with newly pushed elements: " << endl;
+	for(auto x: data3)
+	{
+		cout << x << "\t";
+	}
+	//range based for() loop internally use iterator of the container
+	//iterator is ptr like object, used to access inside any container
+	cout << endl;
+	for(int i =0 ; i< 5 ;++i)
+	{
+		data3.push_back(i * 10);
+	}
+	
+	//Access
+	data3[1] = 100;
+	/*for(int i =0; i< data3.size(); ++i)
+	{
+		cout << data3[i] << "\t";
+	}*/
+	//or
+	cout << "Vector data with updated elements: " << endl;
+	for(auto x: data3)
+	{
+		cout << x << "\t";
+	}
+	cout << endl;
+	/*
+	output:
+	Vector data with updated elements: 
+	1       100     3       4       5       6       0       10      20      30      40
+	
+	iterator class provides the overloads of many operators
+	so it becomes easier to access elements of the containers
+	use asterisk, it not only provide read but also write access
+	auto it = data3.begin();
+	cout << *it; //first elements of vector
+	++it;
+	--it;
+	it  = it+5;	// jump to specific index
+	*/
+
+	//delete -> erase()
+	//we can use iterator and make access to specific element you want to delete
+	auto it = data3.begin();
+	cout << "Vector data after deleting " << *it << " elements: " << endl;
+	data3.erase(it);
+	for(auto x: data3)
+	{
+		cout << x << "\t";
+	}
+	cout << endl;
+
+	/*insert to specific positions
+	auto it_pos = data3.begin() + 5; -> jump to 5th location
+	vector,insert(postion, new_element)
+	*/
+	auto it_pos = data3.begin() + 5; //jump to 5th location of vector 
+	data3.insert(it_pos, 200);
+	cout << "Vector data after inserting 200 element at " << *it_pos << " : " << endl;
+	for(auto x: data3)
+	{
+		cout << x << "\t";
+	}
+	cout << endl;
+	
+	/*
+	output:
+	Vector data:
+	1       2       3
+	Vector data with newly pushed elements:
+	1       2       3       4       5       6
+	Vector data with updated elements:
+	1       100     3       4       5       6       0       10      20      30      40
+	Vector data after deleting 1 elements:
+	100     3       4       5       6       0       10      20      30      40
+	Vector data after inserting 200 element at 200 :
+	100     3       4       5       6       200     0       10      20      30      40
+	*/
+
+	/*
+	Add one more function called FindAll, 
+	that returns the starting indices of all the found substrings in a target string.
+	Return the indices in a vector. Support case sensitive/insensitive search.
+	enum class Case{SENSITIVE, INSENSITIVE};
+	
+	std::vector<int>
+	FindAll(
+	const std::string &target,              //Target string to be searched
+	const std::string &search_string,       //The string to search for
+	Case searchCase = Case::INSENSITIVE,    //Choose case sensitive/insensitive search
+	size_t offset = 0) {                    //Start the search from this offset
+		//Implementation
+	
+		
+		//Return indices of found strings,
+		//else an empty vector
+		
+	}
+	*/
 
 	/*
 	Topicxx: Microcontroller, bitwise operation, Register set/clear/reset
