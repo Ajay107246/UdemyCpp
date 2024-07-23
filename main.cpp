@@ -29,7 +29,7 @@
 #include <initializer_list>
 #include <cassert>
 #include <vector>
-
+#include "oopsConcept.h"
 
 //user defined headers
 #include "classesObjects.h"
@@ -37,8 +37,9 @@
 //#include "moveSemantic.h"	//error: segmentation fault at *m_pMoveInt
 #include "moveFuntion.h"
 #include "memManagement.h"	//Topic27, mem-mangt, smart-ptr
-
-
+//#include "../header/Account.h"
+#include "Account.h"
+#include "Checking.h"
 
 //Topic18: inline function: MACRO
 #define sumMacro(x,y) x+y
@@ -2650,8 +2651,158 @@ int main()
 	NOTE: C++17 provides variant library as type safe union
 	*/
 	
+	/*Topic53, OOPS concepts
+	1. system made up of objects
+	2. obj. is instance of classes
+	3. classes and obj are related and collaborate together to form system
+	4. in OOP collaboration cn create using composition and inheritence
+	5. this create a system allows to create solution for problem doamin.
+	6. Composition: obj composed inside another object
+	7. represent "has-a" relationship
+	8. reuse bahavior
+	9. e.g. car 'has-a' engine, and uses its implementation to move
+	10. class Car 
+	{
+		Engine m_Engine;
+		void accelerate()
+		{
+		m_engine.Intake();
+		}
+	}
+	11. Inheritence: Classes inherits feature of other classes
+	12. child can reuse and inherit parent class behavior
+	13. 'is-a' relation
+	14. Animal -> eat, speal, run (Behavior) -> inherit from Animal class 
+	syntax:
+	class <child_class_name> : <access_modifier> <base_class>
+	class Dog : public Animal
+	*/
+	cout << "\nTopic53, OPPS Concept: Composition, Inheritence!" << endl;
+	Dog dg;
+	dg.Eat(); dg.Run(); dg.Speak();
 
+	/*
+	Here Dog is child or derived class and inherits the behavior of parent/base class: Animal
+	so if Dog class does not have its own methods, it will still use method from its parent class
+	like creating object/instance of Dog we can call methods from its base/parents Animal class
 
+	if Dog derived class has its own methods, it will call its own instead from parent class.
+
+	output:
+	Topic53, OPPS Concept: Composition, Inheritence!
+	Dog instance, without its own methods
+	Eating Animal!
+	Running Animal!
+	Speaking Animal!
+
+	Dog instance, with its own methods
+	Dog eats meat!
+	Running Animal!
+	Dog barks loudly!
+	*/
+
+	/*Topic53-1, OPPS: Access Specifier
+	1. Accessability
+	class Base
+	{
+	private:
+		methodA; -> Inaccessable outside class, and accessable from only same class
+	public:
+		methodB; -> Accessable to outside class as well
+	protected:
+		methodC; -> Accessable to only its child class/ hierarchy
+	}
+
+	2. Access modifier to child class
+	class Child : public Base{} - same as base{}
+
+	class Child : private Base{} -> all member => private method A,B,C and only B, C can be accessable to child class
+
+	class Child : protected Base{} -> private methodA(){}, protected methodB(){}, methodC().
+
+	3. if access modifier is not used, then default modifier of child will be used
+	4. Object Creation:
+	instance of child is created, constr execute from base -> child
+	destructor execute reverse order child then base
+	base data members will become part of child object
+	e.g.
+	class A{
+	private:
+	int x; float y;
+	//methods
+	}
+	class B: public A
+	{
+	private:
+	double z;
+	//methods
+	}
+	data members from A -> x, y -> not accessable from Class B even though they are inherited
+	*/
+	
+	/*manage Bank Account class example
+	1. manage account
+	2. customer - common operations
+	3. bank -> administrative tasks
+	4. Accout class -> represent Account
+	5. common implementation for all account type
+	6. Account -> 
+	data members: name, acc_Number, balance, etc
+	methods: withdraw(), Deposit(), GetBalance(), AcculateInterest(), GetInterestRate()
+	7. Accountclass: Saving{}, Chekcing{} -> might have there own methods for certain operations
+	8. 
+	*/
+	cout << "\nTopic53-1, Bank Accout Program, OOPS concepts!" << endl;
+	Account Acc("Bob", 1000);
+	try
+	{
+		cout << "Initial balance: " << Acc.getBalance() << endl;
+		Acc.dispositAmount(150);
+		cout << "Balance_1 (deposit+150): " << Acc.getBalance() << endl;
+		Acc.withdrawAmount(800);
+		cout << "Balance_2: (withdraw-800): " << Acc.getBalance() << endl;
+		Acc.withdrawAmount(400);	//exception over withdrawn amount
+		cout << "Balance_2: (withdraw-400): " << Acc.getBalance() << endl;
+	}
+	catch (const exception &e)
+	{
+		cerr << "Error: " << e.what() << endl;
+	}
+	/*
+	output:
+	Initial balance: 1000
+	Balance_1 (deposit+150): 1150
+	Balance_2: (withdraw-800): 350
+	Error: Insufficient balance! Can not have negative balance!
+	*/
+
+	//Saving Account class -> Saving.cpp & Saving.h
+	/*
+	Add the Checking class to the hierarchy. 
+	It does not have any interest rate, therefore, 
+	it will not implement the corresponding member functions.
+	The only difference is that the account mandates the balance should not fall below 50. 
+	So, you'll have to re-implement the Withdraw function accordingly. 
+
+	You should proceed only after implementing the entire Account hierarchy.
+	*/
+	cout << "\nTopic53-2, Bank Accout Program, OOPS concepts, Checking{} derived class:minBalance!" << endl;
+	Checking Ch("Robin", 500, 50);	//check NOTE in Checking.h 50: Minimum balance amount -> ((m_balance - amount) > m_MinimumBalance)
+	Ch.withdrawAmount(480);
+	cout << "Bank balance after Checking{}: " << Ch.getBalance() << endl;
+
+	/*
+	output:
+	Topic53-2, Bank Accout Program, OOPS concepts, Checking{} derived class:minBalance!
+
+	Checking():Invalid Amount!
+	Bank balance after Checking{}: 500!
+	
+	---> if we use throw xx --->
+	terminate called after throwing an instance of 'std::runtime_error'
+	what():  Insufficient balance! Enter valid Amount!
+	*/
+	
 
 	/*
 	Topicxx: Microcontroller, bitwise operation, Register set/clear/reset

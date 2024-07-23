@@ -46,6 +46,17 @@
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "typeinfo": "cpp",
-        "bitset": "cpp"
+        "bitset": "cpp",
+        "format": "cpp",
+        "variant": "cpp",
+        "charconv": "cpp",
+        "chrono": "cpp",
+        "complex": "cpp",
+        "cstdarg": "cpp",
+        "ctime": "cpp",
+        "ratio": "cpp",
+        "iomanip": "cpp",
+        "span": "cpp",
+        "sstream": "cpp"
     }
 }
