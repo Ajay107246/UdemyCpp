@@ -51,6 +51,8 @@
  * prevent name clashes
  */
 using namespace std;
+using namespace string_literals;
+
 
 /* Flags and Port PIN */
 bool isSet_GPS_PIN;
@@ -461,7 +463,6 @@ void Unique_ptrDeleter()
 
 }
 
-/**/
 
 void Shared_ptrDeleter()
 {
@@ -656,6 +657,65 @@ void PrintIinitList(initializer_list<int> values)
 		cout << x << "\t";
 	}
 }
+
+/* Topic52, Union in C++
+1. Dis/Advantage of creating instance of struct inside union
+*/
+union TestUnion
+{
+	int x;
+	char ch;
+	TestUnion():ch{'a'}{
+		//cout << __FUNCSIG__ << endl;
+		cout << __PCTYPE_FUNC << endl;
+	}
+	~TestUnion()
+	{
+		cout << __PCTYPE_FUNC << endl;
+	}
+};
+struct As
+{
+	As()
+	{
+		cout << "As()" << endl;
+	}
+	~As()
+	{
+		cout << "~As()" << endl;
+	}
+	As(As&& other)noexcept
+	{
+		cout << "As&&()" << endl;
+	}
+	As& operator=(const As& other)noexcept
+	{
+		cout << "As& operator=()" << endl;
+		if (this == &other)
+		{
+			return *this;
+		}
+		return *this;
+	}
+	
+	As& operator=(As& other)noexcept
+	{
+		cout << "As& operator=()" << endl;
+		if (this == &other)
+		{
+			return *this;
+		}
+		return *this;
+	}
+};
+
+union UDT
+{
+	As a;	//union member 'UDT::a' with non-trivial 'As::~As()'
+	string strUnion;
+	UDT(){}	//cause class/struct has thier user-defined constr/destructr
+	~UDT(){}
+};
 
 int main()
 {
@@ -2525,6 +2585,73 @@ int main()
 		
 	}
 	*/
+
+	/*Topic52, Union in C++
+	1. ability to store all members in same memory
+	2. saves memory space
+	3. size = higher data type it holds
+	4. no way to know which type it holds and active member
+	5. nested union has non-default constr, then it deletes default constr of union
+	6. additionally it deletes desctructor also.
+	7. from C++11, allowed to have member that contains user-defined constr & destructor
+	8. cannot assign obj of user-defined types directly to union members (use new operator)
+	9. user-defined types are not destroyed implicitly, have to manually invoke their destructor
+	10. union cannot have a base clas, and not inherit from union
+	11. cannot contain virtual functions
+	12.  
+	*/
+	cout << "\nTopic52, Union in c++!" << endl;
+	TestUnion tUni;
+	cout << "sizeof(tUni)= " << sizeof(tUni) << endl;
+	cout << "Before int:x set,Char from Union:tUni= " << tUni.ch << endl;
+	tUni.x = 100;
+	cout << "After int:x set, Char from Union:tUni= " << tUni.ch << endl;
+
+	/*
+	Error while creating instance of union which holds another instance of struct
+	where struct has its own constr & destructr
+	error 1: union member 'UDT::a' with non-trivial 'As::~As()'
+  	712 |         As a;
+	error 2: error: use of deleted function 'UDT::UDT()' #2606 
+	note: 'UDT::UDT()' is implicitly deleted because the default definition would be ill-formed:
+  	710 | union UDT
+
+	//default constr of uninon become deleted,
+	union -> need to write default constr & destructr manually
+
+	output:
+	0x7ffc041ad1a0
+	sizeof(tUni)= 4
+	Before int:x set,Char from Union:tUni= a
+	After int:x set, Char from Union:tUni= d
+	*/
+
+	UDT udt;  //struct As has its own default constr & destructr
+	
+	/* not correct way to create instance of As struct/class
+	cause obj created not assigned  which is not exist yet
+	*/
+	udt.a = As {};	
+	//udt.strUnion = "Hello Union"s; //!crash here!, since mem init is not done
+	new (&udt.strUnion) string {"Hello Union"};
+	cout << "string variable from union= " << udt.strUnion << endl;
+	
+	new (&udt.a) As{};	//no call to destructor, cause no implicitly destroyed
+	udt.a.~As();	//manually need destructor
+	/*
+	output:
+		As()
+	As& operator=()
+	~As()
+	string variable from unino= Hello Union
+	As()
+	~As()
+	
+	NOTE: C++17 provides variant library as type safe union
+	*/
+	
+
+
 
 	/*
 	Topicxx: Microcontroller, bitwise operation, Register set/clear/reset
