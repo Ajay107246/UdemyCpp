@@ -15,9 +15,9 @@ value of str2=C++
 Topic5:
 Address of ptr: 0x25
 Address of ptr1: 0
-Address of p21: 0x5ff810
-Address of ptr2: 0x5ff810
-Address of ptr4: 0x5ff810
+Address of p21: 0x5ff800
+Address of ptr2: 0x5ff800
+Address of ptr4: 0x5ff800
 
 Topic6:
 value of x= 10
@@ -72,7 +72,7 @@ Topic14, rangeBASedForLoop:
 2
 3
 4
-5
+5 
 
 Topic15, OveloadFunction:
 result2Double=9.4
@@ -364,6 +364,9 @@ Topic53-4, virtual keyword, Transaction method on Saving{}
 Initial balance: 100
 Interest Rate: 0
 Final Balance: 30
+
+Topic55, final specifier & override keyword!
+Text::serialize(float version)!
 
 Topicxx, Microcontroller, bitwise operation in c++!
 REG_0, init value=00000000

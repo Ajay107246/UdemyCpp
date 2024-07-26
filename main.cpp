@@ -42,6 +42,7 @@
 #include "Checking.h"
 #include "Saving.h"
 #include "Transaction.h"
+#include "FinalOverride.h"
 
 //Topic18: inline function: MACRO
 #define sumMacro(x,y) x+y
@@ -2874,7 +2875,28 @@ int main()
 	NOTE2: bcause of virtual keyword, size of class get incresed by 4byte (32bit platform) and/ 8 byte of (64byte platform)
 	*/
 
+	/*Topic55: 
+	final: specifer that is for class & method to restrict derived & override
+	override: keyword for method to override in derived class
+	
+	*/
+	//create object of derived classs , assign to ref of base class
+	cout << "\nTopic55, final specifier & override keyword!" << endl;
+	
+	Text tx;
+	Document &doc = tx;
+	doc.serialize(2.5f);
 
+	/*
+	output:
+	Topic55, final specifier & override keyword!
+	using without override ketword in derived/child class
+	Document::serialize(float version)!
+
+	using override ketword in derived/child class
+	Text::serialize(int version)!
+	*/
+	
 	/*
 	Topicxx: Microcontroller, bitwise operation, Register set/clear/reset
 	*/
