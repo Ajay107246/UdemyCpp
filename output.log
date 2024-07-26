@@ -1,0 +1,395 @@
+Topic1:
+This is first program using 'namespace std' to access object cout!
+
+Topic2:
+Primitive types in c++!
+
+Topic3:
+A= 0    B= 0
+Flag=0  fl= 1.283
+
+Topic4:
+value of a3=5
+value of str2=C++
+
+Topic5:
+Address of ptr: 0x25
+Address of ptr1: 0
+Address of p21: 0x5ff810
+Address of ptr2: 0x5ff810
+Address of ptr4: 0x5ff810
+
+Topic6:
+value of x= 10
+value of *ptr5= 10
+value of  x1= 10
+nullptr ptr6=0
+
+Topic7:
+before swapPtr, num1=7  num2=5
+sumResult=12
+after swapPtr,  num1=5  num2=7
+factResult=5040
+
+Topic8:
+Reference Type=>
+ff=15
+dd=15
+ref=15
+
+Topic9:
+after swapRef:
+num1=7
+num2=5
+
+Topic10:
+swapPassbyVal:
+val1=2
+val2=5
+
+Topic11:
+value using const *ptr=6
+value using &ref=5
+Value of PI=3.14159
+
+Topic12:
+Value of xy1=15
+Value of MAX=12
+Value of (&ref_x1=xy1)=>15
+Value of (&ref_x2=xy1)=>15
+Value of (*ptr11=&xy1)=>15
+Value of (s*ptr12=&xy1)=>15
+Value of (*ptr13=&xy1)=>15
+Value of (*ptr14=&MAX)=>12
+Value of (&r1 = ref_x1)=>15
+
+Topic13, autoKeyword:
+Value of [isum1 = (isum + 4.9f)]=>19.9
+Value of int SumResult(isum1,ib)=>24
+
+Topic14, rangeBASedForLoop:
+1
+2
+3
+4
+5
+
+Topic15, OveloadFunction:
+result2Double=9.4
+type of value,result2Double=> d
+
+result3Double=11
+type of value,result3Double=> d
+
+resInt=12
+type of value,resInt=> i
+
+charRes=
+type of value,charRes=> c
+
+value using *ptr=11
+value using const *ptr=10
+
+Topic17, DefaultFunctionArg:
+title=Notepad
+x=-1
+y=-1
+wid=-1
+height=-1
+Trial1 with arg as input to function:
+title=Notepad
+x=10
+y=20
+wid=-1
+height=-1
+
+Topic18, Inline:
+sumInline(2,3)=5
+sumInlineMacro(7,3)=10
+sqInlineMacro(vall+1)=81
+sqInlineMacro(vall_9+1)=19
+Square(_vall5+1)=36
+
+Topic19, Function pointer:
+(*Psum)(3,10)=13
+Psum(3,10)=13
+
+Topic20, Namespace:
+avg::Calculate(3.5, 6.5)=>5
+basic::Calculate<int>(ee1, ee2)=>14
+
+nestedNamespace:
+Sort::mergeSort()
+Sort::quickSort()
+Sort::insertionSort()
+Sort::Compare::Less()
+Sort::Compare::Greater()
+::namespaceWithoutName()
+
+Topic21, Dynamic memory allocation:
+malloc, *ptr41=41
+calloc, *ptr42(init with zero)=0
+Topic21: Memory Management in c++!
+initialized new, [*ptr43 = new int]=5
+updated new, [*ptr43 = new int]=43
+
+Topic22, Dynamic Array allocation (new[]):
+before, ptr45_string_arr=C++
+
+Topic22/24, OOP:Class & Objects in c++!
+Draw a circle!
+Topic29, totalCarObj= 0
+
+Topic32, Car() Delegating Constr. gets called!
+Fuel= 6.5
+Passengers= 0
+Speed= 4
+Topic28, totalCarObj= 1
+
+Topic26, non static data member initializer c++!
+
+vehicle() gets called!
+
+Initialized non static data member from its own values:
+Car= 0
+Truck= 0
+Bus= 0
+Arr[5]=1        2       3       0       0
+
+Initialized non static data member from args to object:
+Car= 5
+Truck= 0
+Bus= 0
+Arr[5]=1        2       3       0       0
+
+Topic28, Car total Obj count!
+
+Default Constr. Car() gets called!
+
+Default Constr. Car() gets called!
+
+Default Constr. Car() gets called!
+Fuel= 6.5
+Passengers= 0
+Speed= 4
+Topic28, totalCarObj= 4
+Topic29, totalCarObj= 4
+
+Topic32, Car() Delegating Constr. gets called!
+
+Topic31, Copy Constructor!
+
+Default Constr. Car() gets called!
+Topic33, Integer::getValue()= 0
+Topic33, Integer::getValue()= 7
+Topic33, Integer::getValue()= 7
+
+Topic34,R-value & L-value reference!
+L-value reference: Print(int &x)
+const L-value reference: Print(int &x)
+
+Topic36, std::move Function
+moveFunction(int)
+moveFunction(const moveFunction &)
+moveFunction(const moveFunction &&)
+moveFunction(const moveFunction &&)
+setValueMoveFun()
+getValueMoveFun()
+5
+
+Topic37, mem-management, Smart pointer
+moveFunction(int)
+setValueMoveFun()
+getValueMoveFun()
+20
+moveFunction()
+~moveFunction()
+moveFunction(int)
+move assignment operator=(const moveFunction&& obj)
+~moveFunction()
+getValueMoveFun()
+58
+Storing data into a file=getValueMoveFun()
+58
+~moveFunction()
+
+Topic38, 39, mem-management shared_ptr in c++!
+Topic39, mem-management sharing normal ponter object in c++!
+Employee Project Details=[Project Name], 1.Video Coder
+Employee Project Details=[Project Name], 1.Video Coder
+Employee Project Details=[Project Name], 1.Video Coder
+[Project Name], 1.Video Coder
+Topic, sharing pointer, unique_ptr<>!
+Topic40, smart pointer, shared_ptr<>!
+[Project Name],  shared_ptr<>, Video Coder
+shared_ptr, prjShared reference count=4
+Topic41-2, smart pointer (drawback reference count), shared_ptr<>!
+Enter the <10 or >10 here=
+Reference count=2
+value of m_ptrShared=9
+Reference count=1
+value of m_ptrShared=11
+
+Topic42,weak_ptr, input <15 or >15 here=
+numWeak to check availble/valid or not=16
+Resource is no longer available!
+numWeak to check availble/valid or not=14
+value of m_ptrShared=14
+Reference count=2
+
+Topic43-1, learn Circular reference - raw _ptr
+EmployeeCir()
+Circular()
+Topic43-2, learn Circular reference - shared_ptr (memory leak, with no destructor call)
+EmployeeCir()
+Circular()
+Topic43-3, learn Circular reference - weak_ptr, shared_ptr (No memory leak)
+Topic44, Learn custom deleter function/obj. , with unique_ptr & shared_ptr
+
+unique_ptr Deleter, p17=200
+unique_ptr with custom deleter function Object, value for *p18=150
+unique_ptr with custom deleter function, value for *p19=175
+pointer is freed from custom deleter function!
+pointer freed from custom deleter, Function object!
+
+shared_ptr with custom deleter function object, value for *p20=250
+shared_ptr with custom deleter function, value for *p21=275
+pointer is freed from custom deleter function!
+pointer freed from custom deleter, Function object!
+
+Topic46, Learn move() function, with unique_ptr & shared_ptr!
+Move() function with smart_ptr: mem allocation! 3,7
+Move() function with smart_ptr: mem allocation! 3,7
+
+Topic47-1, raw char string=AjayShimpi
+Topic47-1, raw char string with ptr =AjayShimpi
+
+Topic47-2, string library!
+All strings=Hello NIce World!
+str15= Hello NIce World
+ch=str12[1]:I
+before, str12=I
+after, str12[1] = 'i':Nice
+Nice is not found!
+NIce occurance found at: 6
+Substring from Hello World! is World
+Length of string <Hello World!> is 12
+Hello and Nice are not equal.
+Inserting and erasing an element from string!
+str15= Hello, NIce World after inserting character/string ','
+converting Hello, NIce World in c_style string using c_str(): Hello, NIce World
+str20 in upper case: HELLO WORLD
+str20 in lower case: :hello world
+Topic47-3, formatted string-> std::stringstream!
+str21, usage of stringstream:
+Sum of 3 & 7 is: 10
+
+sumStream1, usage of stringstream:
+10
+data1:10 11 12 13 str 14 done!
+extracted INT from string data1=> 10
+extracted INT from string data1=> 11
+extracted INT from string data1=> 12
+extracted INT from string data1=> 13
+
+Topic48, user-defined literals!
+Meter Reading: 32 K.M.
+Meter Reading: 51.2 K.M.
+Meter Reading: 32.5 K.M.
+1. distanceMeter (str literal)=> 5300
+3. myString (str literal)=> Hello, This is string literals
+4. binValue (str literal)=> 11
+
+Topic49, constexpr: constant expresssion
+constexpr i value=> 40
+const iConst value=> 40
+iInt value=> 40
+sumConstr  value=> 10
+maxNum value=> 5
+
+Topic50,initializer_list!
+value in initializer_list=
+1       2       3       4       5
+10      20      30      40      50
+
+Topic51, Vector in c++!
+Vector data:
+1       2       3
+Vector data with newly pushed elements:
+1       2       3       4       5       6
+Vector data with updated elements:
+1       100     3       4       5       6       0       10      20      30      40
+Vector data after deleting 1 elements:
+100     3       4       5       6       0       10      20      30      40
+Vector data after inserting 200 element at 200 :
+100     3       4       5       6       200     0       10      20      30      40
+
+Topic52, Union in c++!
+0x7ffc041ad1a0
+sizeof(tUni)= 4
+Before int:x set,Char from Union:tUni= a
+After int:x set, Char from Union:tUni= d
+As()
+As& operator=()
+~As()
+string variable from union= Hello Union
+As()
+~As()
+
+Topic53, OPPS Concept: Composition, Inheritence!
+Dog eats meat!
+Running Animal!
+Dog barks loudly!
+
+Topic53-1, Bank Accout Program, OOPS concepts!
+Initial balance: 1000
+Balance_1 (deposit+150): 1150
+Balance_2: (withdraw-800): 350
+Error: Insufficient balance! Can not have negative balance!
+Size of class(Account)= 48
+
+Topic53-2, Bank Accout Program, OOPS concepts, Checking{} derived class:minBalance!
+
+Checking():Invalid Amount!
+Bank balance after Checking{}: 500
+
+Topic53-3, virtual keyword, Transaction method on Checking{}
+!Transaction started!
+Initial balance: 1000
+Interest Rate: 0
+Final Balance: 930
+
+Topic53-4, virtual keyword, Transaction method on Saving{}
+!Transaction started!
+Initial balance: 100
+Interest Rate: 0
+Final Balance: 30
+
+Topicxx, Microcontroller, bitwise operation in c++!
+REG_0, init value=00000000
+REG_0, after mask0=00000001
+REG_0, after mask1=00000011
+bit 1 of REG_0 is on
+
+REG_0, after 0th, bit_clear()=00000010
+REG_0, after SET(mask4 | mask5)=00110010
+REG_0, after CLEAR(mask4 | mask5)=00000010
+I2C_GPS_ANTENNA_PIN, initial value=00010000
+I2C_GPS_ANTENNA_PIN, after bit_check()=1
+
+TopicLast, atexit:
+!End of Main()!
+0x7ffc041ad1a0
+~Circular()
+~EmployeeCir()
+~moveFunction()
+~moveFunction()
+~moveFunction()
+~moveFunction()
+~Car() gets called!
+~Car() gets called!
+~Car() gets called!
+~Car() gets called!
+~Car() gets called!
+~Car() gets called!
+!End of Program!

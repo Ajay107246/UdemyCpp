@@ -40,6 +40,8 @@
 //#include "../header/Account.h"
 #include "Account.h"
 #include "Checking.h"
+#include "Saving.h"
+#include "Transaction.h"
 
 //Topic18: inline function: MACRO
 #define sumMacro(x,y) x+y
@@ -2768,12 +2770,15 @@ int main()
 	{
 		cerr << "Error: " << e.what() << endl;
 	}
+	cout << "Size of class(Account)= " << sizeof(Account) << endl;
 	/*
 	output:
 	Initial balance: 1000
 	Balance_1 (deposit+150): 1150
 	Balance_2: (withdraw-800): 350
 	Error: Insufficient balance! Can not have negative balance!
+	Size of class(Account)= 48 (with virtual keyword)
+	Size of class(Account)= 40 (without virtual keyword)
 	*/
 
 	//Saving Account class -> Saving.cpp & Saving.h
@@ -2802,7 +2807,73 @@ int main()
 	terminate called after throwing an instance of 'std::runtime_error'
 	what():  Insufficient balance! Enter valid Amount!
 	*/
+
+	/*Topic53-3, virtual keyword, Transaction class*/
+	cout << "\nTopic53-3, virtual keyword, Transaction method on Checking{}" << endl;
+	Checking ChTransact("Boby", 1000, 50);
+	Transaction(&ChTransact);
+
+	/*
+	output:
+	!Transaction started!
+	Initial balance: 1000
+	Interest Rate: 0
+	Final Balance: 980
+	*/
+
+	//perform Transaction on Saving
+	cout << "\nTopic53-4, virtual keyword, Transaction method on Saving{}" << endl;
+	Saving SavAcc("Sabby", 100, 0.05f);	//0.05f -> interest rate
+	Transaction(&SavAcc);	//!Compiler is not calling getInterestRate() method from saving : outut=0
 	
+	/*
+	!Transaction started!
+	Initial balance: 100
+	Interest Rate: 0
+	Final Balance: 80
+	*/
+		
+	/*Topic54: Polymorphism, 
+	1. Different form of functions are implemented
+	2. call revoke at compile/runtime
+	3. compile time polymorphism / binding: function /operator overloading, templates
+	compiler has enough info to decide which function to be invoke
+	4. runtime polymosrphism / dynamic binding:  which function should be invoked is not known.
+	5. this is implemented using virtual mechanism
+	6. compiler will insert some code that decide which code has to be invoked when member functions prefix with virtual keyword
+	8. such function called as : polymorohic function
+	9. invoke through a base class ptr/reference.
+
+	10. Vtable & VPtr: Account class -> reimplemented methods in child class (Saving) -> prefix with virtual key word
+	methods -> accumulateInterest(), getInterest(), withdrawAmount() : Account class
+	11. when compiler compiles this class -> generate array of function ptr -> called Virtual table
+
+	12. Vtable : addr of virtual function (non-virtual function do not appear in Vtable)
+	13. starting ptr of Vtable -> stored in special member variable -> virtual pointer
+	14. this Vptr -> auto. added by compiler as member of class, points to Vtable of corresponding class.
+	15. Saving class -> derived class from Account -> methods :accumulateInterest(), getInterest() -> override
+	compiler generrate Vtable for Saving class. -> include addr of virtual function in VTable 
+	16. No withdrawAmount() function is inherited in Saving class, but normal rules of inheritance will be applied 
+	17. it will be present in Saving class Vtable.
+	18. if we create a instane of Saving class, virtual ptr si inherited, init with addr of VTable of Saving class
+	19. this init take place in constr of Saving class
+	20. compiler add this init code in all constr of class in hierarchy
+	21. e,g,
+	pAccount->Deposit(100); -> non-virtual function , direct invoke of Deposit()
+	pAccount-> accumulateInterest() -> virtual function, compiler has to generate extra code:
+	a) get the addr of obj 
+	b) get vPtr
+	c) find the position of function
+	d) get addr of the function
+	e)  invoke the function
+	pAccount->withdrawAmount() -> as steps are taken above (a)~(e), offset (+4) is added to grab the addr of this function
+	pAccount->getInterestRate() -> as steps are taken above (a)~(e), offset (+8) is added to grab the addr of this function
+	NOTE: this all  information can be seen in Disassembly code form VS Code / in general tooling environment
+	this 4 byte will get added to subseqent function as per list of function sequense in Vtable 
+
+	NOTE2: bcause of virtual keyword, size of class get incresed by 4byte (32bit platform) and/ 8 byte of (64byte platform)
+	*/
+
 
 	/*
 	Topicxx: Microcontroller, bitwise operation, Register set/clear/reset
