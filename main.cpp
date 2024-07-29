@@ -29,6 +29,8 @@
 #include <initializer_list>
 #include <cassert>
 #include <vector>
+#include <typeinfo>
+
 #include "oopsConcept.h"
 
 //user defined headers
@@ -1371,7 +1373,7 @@ int main()
 	{
 		cout << "\t" << ptr[i] << endl;
 	}*/
-	delete []ptr44; //do not forget to add [] since it is an array.
+ 	delete []ptr44; //do not forget to add [] since it is an array.
 	ptr44= nullptr;
 	
 	//allocate 1 extra byte for null terminating char at end
@@ -2897,6 +2899,207 @@ int main()
 	Text::serialize(int version)!
 	*/
 	
+	/* Topic56: Object Slicing:
+	1. situation where compiler will removes some part of an object
+	2. occurs where derived class object is assigned to concrete base class object
+	3. pass derived class object to function which accept base class object by value
+	4. since derived class may content more attributes, the object may required more memory
+	5. so, size of derived class bject is more than its base class object
+	6. while assigning it to object to base object, some part of memory gets overwritten
+	7. lead to memroy corruption
+	8. to prevent this, compiler slice this derived class object, effectively removing memory that contains its attributes.
+	9. derived class object copied to base class object
+	10. e.g. Account a -> name,accNo, bal -> 40Byte
+	Savings s -> name,accNo, bal, rate -> 44Byte
+	if we do -> a=s; -> when s obj is copying at mem-area of a obj, it will overwrite the part of memoory
+	this leads to undefined behavior in program
+	to prevent problem, compiler removes some part of savings obj
+	size of s can match with a
+	This is known as Object Slicing
+	-> ensure that if obj is created from base and try to access method from derived class
+	that base class obj should be -> ptr / reference.
+	
+	*/
+	cout << "\nTopic56, Object Slicing!" << endl;
+	Checking chObj("Sam", 500, 50);
+	Account *pAcc = &chObj;	//upcast assign base ptrObj to derived reference
+
+
+	/*want to get back derived obj from base ptr -> not possible
+	error: invalid conversion from 'Account*' to 'Checking*' [-fpermissive]
+	Not all account can be Checking accounts
+	
+	Checking *pCheck = pAcc;
+	work until unless manual static_cast<Checking*> is mentioned with pAcc
+	*/
+	Checking *pCheck = static_cast<Checking*>(pAcc);	//down cast (specify manually)
+	Transaction(&chObj);
+	
+	/*instead of Checking, create obj Saving an pass it to Transaction?*/
+	Saving svObj("Sam", 500, 0.05f);	//interestRate= 0.05f
+	//Transaction(&svObj);	//undefined behaviour
+	
+	/*
+	output: undefined behaviour
+	!Transaction started!
+	Initial balance: 500
+	Minimum Balanceof Checking: 0
+	Interest Rate: 0
+	Final Balance: 430
+	Solution: we need to check in Transaction class, where pAccount is really pointing to pChecking or not?
+	*/
+	
+	/*
+	Topic57: typeid operator (RTTI concept)
+	1. it returns the information of typeid as an object of typeinfo class
+	2. include header <typeinfo>
+	3. type_info : contain certain methods/function -> equlity operator, name(): human readable name of type
+	4. RTTI: Run-Time Type Information (RTTI) in C++ is a mechanism that 
+	allows you to determine an object’s data type during program execution
+	5. 
+	*/
+	cout << "\nTopic57, Typeid (RTTI concept)! " << endl;
+	int m_iTypeInt {};
+	float m_fTypeFloat {};
+	const type_info &ti = typeid(m_iTypeInt);
+	cout << "type name of var-> m_iTypeInt= " << ti.name() << endl;
+	const type_info &tf = typeid(m_fTypeFloat);
+	cout << "type name of var-> m_fTypeFloat= " << tf.name() << endl;
+	
+	const type_info &tSv = typeid(svObj);
+	cout << "type name of Saving obj-> svObj= " << tSv.name() << endl;
+	const type_info &tAcc = typeid(pAcc);	//use only addr, pAcc
+	cout << "type name of Account obj-> pAcc= " << tAcc.name() << endl;
+	//type of Obj this pAcc ptr pointing at
+	const type_info &tAccPtr = typeid(*pAcc);	//use *pAcc, polymorphic type, gether info at runtime
+	
+	if (tAccPtr == typeid(Checking))
+	{
+		cout << "Account ptr *pAcc poiting to Saving object." << endl;
+	}
+	else
+	{
+		cout << "Account ptr *pAcc NOT poiting to Saving object." << endl;
+	}
+	cout << "type name of Account ptr poiting to obj -> *pAcc= " << tAccPtr.name() << endl;
+
+	/*
+	output:	
+	Topic57, Typeid (RTTI concept)!
+	type name of var-> m_iTypeInt= i
+	type name of var-> m_fTypeFloat= f
+	type name of Saving obj-> svObj= 6Saving
+	type name of Account obj-> pAcc= P7Account
+	Account ptr *pAcc poiting to Saving object.
+	type name of Account ptr poiting to obj -> *pAcc= 8Checking
+	*/
+	//use this typeid() in Transaction class 
+	Checking chkObj("Sam", 700, 40);
+	Transaction(&chkObj);
+
+	/*
+	output:
+	!Transaction started!
+	Initial balance: 700
+	Minimum Balanceof Checking: 40
+	Interest Rate: 0
+	Final Balance: 630
+	*/
+	//use it with Saving class
+	Saving savObj("Sam", 700, 0.05f);	//interestRate= 0.05f
+	Transaction(&savObj);	//won't print the minimumBalance, cause of static_cast<> inside Transaction class
+
+	/*
+	output:
+	!Transaction started!
+	Initial balance: 700
+	Interest Rate: 0
+	Final Balance: 630
+	*/
+
+	/* Topic58: Typeid, over dyanamic_cast<> 
+	1. this will check whether type cast can be perfomed or not
+	2. if perfomed, it returns type casted pointer, otherwise nullptr
+	3. this does the same opeation as above with same output
+	*/
+	//after replacing static_cast<> to dunami_cast<> in Transaction class
+	Saving dynamicSavObj("Dynamic", 900, 0.05f);	//interestRate= 0.05f
+	Transaction(&dynamicSavObj);
+	Checking dyanamicChkObj("Sam", 900, 70);
+	Transaction(&dyanamicChkObj);
+
+	/*
+	output:
+	!Transaction started!
+	Initial balance: 900
+	Minimum Balanceof Checking: 70
+	Interest Rate: 0
+	Final Balance: 830
+	*/
+	
+	/* Topic58-1,dynamic_cast<> can also work with reference, try-catch
+	1. referece & -> cannot be a nullptr, 
+	2. it will throw exception, bad type_cast
+	3. use try{} catch {}
+	4. try-catch: 
+	5. compiler has to add more information to polymorphic classes
+	6. during compile time, compiler create a type info of object as -> type_info
+	7. stored along with class in vTable
+	8. at runtime, when we use typeid ad dynamic class, these operator query that info from vTable
+	9. RTTI impose overhead on the programs (avoided) 
+	*/
+	Checking tryCatchChkObj("TrysomeCatchChecking", 1000, 90);
+	try
+	{
+		/*
+		1. exception throw in runtime
+		2. pass reference, work fine and dynamic cast with pAccount object 
+		3. it won't work with Saving class object
+		*/
+		Transaction(tryCatchChkObj);	
+	}
+	catch(exception &ex)
+	{
+		/*
+		1. cath() -> always accept an exception type
+		2. exception is base class of all std exception in std library
+		3. what()-> return the message about exception
+		*/
+		cout << "\nException= " << ex.what() << endl;
+	}
+	/*
+	output:
+	!Transaction started!
+	Initial balance: 1000
+	Minimum Balanceof Checking: 90
+	Interest Rate: 0
+	Final Balance: 930
+	*/
+	//Checking and Saving are not compatible, and have no relation
+	Saving tryCatchSavObj("TrysomeCatchSaving", 1100, 110);
+	try
+	{
+		/*
+		1. exception throw in runtime
+		2. pass reference, work fine and dynamic cast with pAccount object 
+		3. it won't work with Saving class object
+		*/
+		Transaction(tryCatchSavObj);	
+	}
+	catch(exception &ex)
+	{
+		cout << "Exception= " << ex.what() << endl;
+	}
+
+	/*
+	ouput:
+	!Transaction started!
+	Initial balance: 1100
+	Exception= std::bad_cast
+	*/
+
+
+
 	/*
 	Topicxx: Microcontroller, bitwise operation, Register set/clear/reset
 	*/

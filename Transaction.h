@@ -25,3 +25,5 @@ base class ptr/ref can points to its any of class /obj
 //now we can perform transaction on SAving as well -> main()
 */
 void Transaction(Account *pAccount);
+/*Topic58-1, dynamic_cast<> can also work with reference*/
+void Transaction(Account &pAccount);    //overloaded Account object
