@@ -45,6 +45,7 @@
 #include "Saving.h"
 #include "Transaction.h"
 #include "FinalOverride.h"
+#include "abstractClass.h"
 
 //Topic18: inline function: MACRO
 #define sumMacro(x,y) x+y
@@ -3098,6 +3099,22 @@ int main()
 	Exception= std::bad_cast
 	*/
 
+	/*Topic 59, Abstract Class, pure virtal functions:
+	1. with ony virtual function in base DocumentAbst {} ->
+	virtual DocumentAbst::serializeAbst(float version)
+	2. with base class DocumentAbst{} with pure virtual function -> 
+	output: main.cpp:3106:17: error: cannot declare variable 'xmlabst' to be of abstract type 'XMLAbst' 
+	*/
+	cout << "\nTopic59, Abstract Class, pure virtal functions! " << endl;
+	
+	XMLAbst xmlabst;
+	writeDoc(&xmlabst);
+
+	/*
+	output:
+	Topic59, Abstract Class, pure virtal functions!
+	virtual DocumentAbst::serializeAbst(float version)
+	*/
 
 
 	/*
