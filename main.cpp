@@ -46,6 +46,8 @@
 #include "Transaction.h"
 #include "FinalOverride.h"
 #include "abstractClass.h"
+#include "diamondClass.h"
+
 
 //Topic18: inline function: MACRO
 #define sumMacro(x,y) x+y
@@ -3111,11 +3113,90 @@ int main()
 	writeDoc(&xmlabst);
 
 	/*
-	output:
-	Topic59, Abstract Class, pure virtal functions!
-	virtual DocumentAbst::serializeAbst(float version)
+	   Topic60: Multiple Inheritance (Diamond problem)
+	1. c++ allows inheritance from more than one class simultaneously
+	2. known as multiple Inheritance
+	3. allows class to reuse/override bahaviours from multiple classes
+	4. this can lead to diamond Inheritance (problem)
+	5. classes inherits from common classes, forms a diamond shape
+	6. e.g.
+	base class stream <- ostream <-istream 
+	R/W through one class iostream -> istream, ostream
+	object of iostream contains instances of its base classes -> stream-istream, stream-ostream (stream x2)
+	object of iostream contains instances of (stream x2) -> leads problem
+
+	-> Stream() invoked twice
+	-> this could cause undefined results meaning -> when Stream() constr opens the file
+	it will open twice a time. check scenario of handling data 
+	*/
+	cout << "\nTopic60, Multiple Inheritance (Diamond problem)! " << endl;
+	ioStream ioStreamObj("out.txt");
+
+	string data4;
+	/*
+	output1:
+	constr of Stream{} base class called twice a time -> Stream::Stream(const string &filename)
+
+	Topic60, Multiple Inheritance (Diamond problem)!
+	Stream::Stream(const string &filename)
+	oStream::oStream(ostream &o, const string &filename):out(o), Stream(filename)
+	Stream::Stream(const string &filename)
+	iStream::iStream(istream &i, string &filename):in(i), Stream(filename)
+	ioStream::ioStream(const string &filename):oStream(cout, filename), iStream(cin, filename)
 	*/
 
+	/*
+	for -> ioStreamObj >> data4; 
+	error: not accepting const to non-const data4, cause 
+	under ioStram {} -> iStream was private by deafult while inherit
+	-> class ioStream : public oStream,  iStream
+	change -> public 
+	-> class ioStream : public oStream, public iStream
+	*/
+	ioStreamObj >> data4;	//provide input string once run the program: "ajay"
+	ioStreamObj << data4;
+
+	/*
+	output2:
+	Topic60, Multiple Inheritance (Diamond problem)!
+	Stream::Stream(const string &filename)
+	oStream::oStream(ostream &o, const string &filename):out(o), Stream(filename)
+	Stream::Stream(const string &filename)
+	iStream::iStream(istream &i, string &filename):in(i), Stream(filename)
+	ioStream::ioStream(const string &filename):oStream(cout, filename), iStream(cin, filename)
+	ajay
+	ajay
+	*/
+
+	/*
+	error: request for member 'getFilename' is ambiguous
+	ioStreamObj.getFilename() -> inherited twice cause of, Stream() class constr  invoked twice
+	since getFilename() also get invoked twice
+
+	resolution->
+	to resolve this, there only one object of Stram in iStream
+	iStream{} & oStream{} inhert virtually from Stream{} base class
+	this ensure that there only one Stream object in iStream{} class
+
+	error: no matching function for call to 'Stream::Stream()'
+	resolution: invoke parameterized constr of Stream in ioStream() constr 
+	-> ioStream::ioStream(const string &filename):oStream(cout, filename), iStream(cin, filename), Stream(filename)
+	*/
+
+	ioStreamObj << ioStreamObj.getFilename() << endl;		
+
+	/*
+	Stream() constr invoke only once
+	meaning -> only one instance of Stream{} in iStream object
+	
+	output3:
+	Stream::Stream(const string &filename)
+	oStream::oStream(ostream &o, const string &filename):out(o), Stream(filename)
+	iStream::iStream(istream &i, string &filename):in(i), Stream(filename)
+	ioStream::ioStream(const string &filename):oStream(cout, filename), iStream(cin, filename)
+	diamond
+	diamondout.txt
+	*/
 
 	/*
 	Topicxx: Microcontroller, bitwise operation, Register set/clear/reset
