@@ -47,7 +47,8 @@
 #include "FinalOverride.h"
 #include "abstractClass.h"
 #include "diamondClass.h"
-
+//#include "exceptionHandling.hpp"
+#include "header/exceptionHandling.hpp"
 
 //Topic18: inline function: MACRO
 #define sumMacro(x,y) x+y
@@ -3132,7 +3133,7 @@ int main()
 	cout << "\nTopic60, Multiple Inheritance (Diamond problem)! " << endl;
 	ioStream ioStreamObj("out.txt");
 
-	string data4;
+	string data4;// = "Ajay";
 	/*
 	output1:
 	constr of Stream{} base class called twice a time -> Stream::Stream(const string &filename)
@@ -3197,6 +3198,53 @@ int main()
 	diamond
 	diamondout.txt
 	*/
+
+	/*Topic61: exception handling part-1*/
+	cout << "\nTopic61, Topic61-1: exception handling part-1! " << endl;
+	/*
+	numeric_limits -> gives information about arithmatic types
+	max() -> to get very large number to pass that process records
+	to deliberatly check malloca can not handle very large number here,
+	and crashes the program
+	*/
+	cout << "std::numeric_limits<int>::max()= " << std::numeric_limits<int>::max() << endl; 
+	//processRecords(std::numeric_limits<int>::max());	//here, function does not know anything, and ignoring exception checks
+
+	/*
+	output:
+	std::numeric_limits<int>::max()= 2147483647
+	->> stuck compiler
+	*/
+
+	/*
+	Exception handling:
+	1. Mechanism to handles the error in program that occurs at runtime
+	2. these errors called as exceptions
+	3. exist outside the normal functioning of program
+	4. requires immediate handling by program
+	5. if not handled, program crashes
+	6. cannot be ignored, unline in c progrm
+
+	Mechanism:
+	1. try{}: creates a scope/block & exeption causing code appears here
+	2. can contain other try-catch statements
+	3. throw: throws an exceptions from try block
+	4. exception is object i.e. constructed in throw statement
+	5. it never return wherever it throws
+	6. this will immediately jump to cathc{} handler
+	7. catch: handler that catches exception object
+	8. should appear just after try block
+	9. multiple catch block can exist
+	*/
+
+	try
+	{
+		processRecords(std::numeric_limits<int>::max());
+	}
+	catch (runtime_error & ex)
+	{
+		cout << "catch block: " << ex.what() << endl;
+	}
 
 	/*
 	Topicxx: Microcontroller, bitwise operation, Register set/clear/reset
