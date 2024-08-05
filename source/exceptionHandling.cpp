@@ -1,10 +1,13 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include <random>
+
 /*user-defined headers*/
 #include "../header/exceptionHandling.hpp"
 
 using namespace std;
+
 
 class testStk{
     public:
@@ -113,7 +116,78 @@ int processRecords(int count)
         pArray[i];
     }
     free(pArray);
+
+    //61-7
+    default_random_engine eng;
+    bernoulli_distribution dist;
+    int errors {};
+    for (size_t i = 0; i < count; i++)
+    {
+        try {         
+        cout << "processing records # : " << i << " ";
+        if (!dist(eng))
+        {
+            ++errors;
+            throw runtime_error("could not process the records");
+        }
+        cout << endl;
+        }
+        catch (runtime_error &ex){
+            cout << "[Error " << ex.what() << "]" << endl;
+            if(errors > 4)
+            {
+                throw;  //original throw statement   
+            }
+        }
+    }
     delete[] pNew;
     delete pHT;
     return 0;
+}
+
+AExp::AExp()
+{
+    cout << "AExp():constr!"<< endl;
+}
+
+AExp::~AExp()
+{
+    cout << "~AExp():Destructor!"<< endl;
+}
+
+BExp::BExp()
+{
+    cout << "BExp():constr!"<< endl;
+}
+
+BExp::~BExp()
+{
+    cout << "~BExp():destrctor!"<< endl;
+}
+
+TestExp::TestExp()
+{
+    cout << "TestExp():constr!"<< endl;
+    aP.reset(new AExp); //no need manual destructor
+    throw runtime_error("Failed to initialize");
+    /*
+    part-3-1, below part of code is not needed cause this undefined behavior
+    aP = new AExp;
+    pInt = new int;
+    throw runtime_error("Failed to initialize");
+    cP = new char[1000];
+    pArr = new int[4000];
+    */
+}
+
+TestExp::~TestExp()
+{
+    cout << "~TestExp():constr!"<< endl;
+    /*
+    part-3-1, below part of code is not needed cause this undefined behavior
+    delete aP;
+    delete pInt;
+    delete[] cP;
+    delete[] pArr;
+    */
 }

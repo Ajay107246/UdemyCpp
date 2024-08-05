@@ -3243,13 +3243,13 @@ int main()
 
 	try
 	{
-		processRecords(05);//std::numeric_limits<int>::max());
+		processRecords(10);//std::numeric_limits<int>::max());
 	}
-	catch (exception &ex)
+	/*catch (exception &ex)
 	{
 		cout << "catch exception: " << ex.what() << endl;
-	}
-	/*
+	}*/
+	
 	//If below separate catch blocks are used, then program runs as expected.
 	catch (runtime_error & ex)
 	{
@@ -3263,19 +3263,84 @@ int main()
 	{
 		cout << "catch block3: " << ex.what() << endl;
 	}
-	*/
-	
 
 	/*
 	output:
 	Topic61, Topic61-1: exception handling part-1!
-	std::numeric_limits<int>::max()= 2147483647
-	testStk():constr. Acquire resource !
-	testHeapPtr():constr. Acquire resource ! -> !destructor won't get called cause of early exception! 
-	~testStk():destructor, Release resource!
-	catch exception: Count should be greater than 10
+    std::numeric_limits<int>::max()= 2147483647
+    testStk():constr. Acquire resource !
+    testHeapPtr():constr. Acquire resource ! 61-5: !destructor won't get called cause of early exception! 
+    testHeapPtr():constr. Acquire resource !
+    ~testHeapPtr():destructor, Release resource! -> !destructor gets called cause use of smart_ptr (auto deallocation of memory)! 
+    ~testStk():destructor, Release resource!
+    catch exception: Count should be greater than 10
 	
 	*/
+
+	/* Topic61: exception handling part-2, Nested Exceptions
+		see processRecords() function for more details
+	*/
+
+	/* Topic61: exception handling part-3, Constr & Destructr
+	*/
+	try
+	{
+		/*
+		once the object is created, memory is allocated
+		and constr will onvoke
+		but destructor won't be invoked
+		*/
+		TestExp  tE;	
+	}
+	catch(runtime_error &ex){
+		cout << "catch part-3: " << ex.what() << endl;
+	}
+	/*
+	output:
+	memory allocated to AExp() has not been deleted
+	since destructor of ~BExp() invoked cause this is concrete object (at runtime expection)
+	but the memory allocated through NEW won't be deleted automatically
+	need to delete manually
+	-> can be solve using concepts RAIi-> smart_ptr
+	part-3-1, memory leaks
+
+	BExp():constr!
+	TestExp():constr!
+	AExp():constr!
+	~BExp():destrctor!
+	catch part-3: Failed to initialize
+	
+	output2:
+	RAIi-> smart_ptr solve the problem of memory leak
+	BExp():constr!
+	TestExp():constr!
+	AExp():constr!
+	~BExp():destrctor!
+	~AExp():Destructor!
+	catch part-3: Failed to initialize
+	*/
+	
+	/*Topic61, Expection Handling, No Exception
+	1. Applied to function (declaration & definitions)
+	2. indicates funciton that does not throw any exception
+	3. compiler can optimize the function code: no need to generate stackunwinding code
+	4. An exception immediately terminates the program: stack may/not be unwinded
+	5. Not all function should use noexcept specifier: fun calling another function, fuction: exceptional neutral
+	6.  
+	
+	//cout<< boolalpha << noexcept(TestNoExcept(5)) << endl;	//true/false
+	try
+	{
+		SumNoExcept(3,5);
+	}
+	catch(int x)
+	{
+		cout << "SumNoExcept: 	" << x << endl;
+	}
+	NOTE: this need separate project to run and check output at all stages
+	*/
+
+
 
 	/*
 	Topicxx: Microcontroller, bitwise operation, Register set/clear/reset
