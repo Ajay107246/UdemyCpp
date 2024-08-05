@@ -3214,6 +3214,10 @@ int main()
 	output:
 	std::numeric_limits<int>::max()= 2147483647
 	->> stuck compiler
+	or
+	std::numeric_limits<int>::max()= 2147483647
+	terminate called after throwing an instance of 'std::runtime_error'
+	what():  failed to allocate a very large memory
 	*/
 
 	/*
@@ -3239,12 +3243,39 @@ int main()
 
 	try
 	{
-		processRecords(std::numeric_limits<int>::max());
+		processRecords(05);//std::numeric_limits<int>::max());
 	}
+	catch (exception &ex)
+	{
+		cout << "catch exception: " << ex.what() << endl;
+	}
+	/*
+	//If below separate catch blocks are used, then program runs as expected.
 	catch (runtime_error & ex)
 	{
-		cout << "catch block: " << ex.what() << endl;
+		cout << "catch block1: " << ex.what() << endl;
 	}
+	catch (out_of_range &ex)
+	{
+		cout << "catch block2: " << ex.what() << endl;
+	}
+	catch (bad_alloc &ex)
+	{
+		cout << "catch block3: " << ex.what() << endl;
+	}
+	*/
+	
+
+	/*
+	output:
+	Topic61, Topic61-1: exception handling part-1!
+	std::numeric_limits<int>::max()= 2147483647
+	testStk():constr. Acquire resource !
+	testHeapPtr():constr. Acquire resource ! -> !destructor won't get called cause of early exception! 
+	~testStk():destructor, Release resource!
+	catch exception: Count should be greater than 10
+	
+	*/
 
 	/*
 	Topicxx: Microcontroller, bitwise operation, Register set/clear/reset
