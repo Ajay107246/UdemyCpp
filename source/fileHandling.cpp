@@ -13,6 +13,23 @@ void writeFile()
     outFile << "Hello World!" << endl;
     outFile << 10 << endl;
     outFile.close();
+    
+    /*Topic63-3*/
+    string message("Topic63-3: This is another example of File operations-char IO & seeking");
+    ofstream outChar;
+    outChar.open("testFileOps.txt");
+    if (!outChar)
+    {
+        cout << "Topic63-3, could not open file for writing!" << endl;
+        return;
+    }    
+    for(char ch: message)
+    {
+        outChar.put(ch);
+    }
+    outChar.seekp(0,ios::end);
+    outChar.put('#');
+    //Topic63-5, output: Topic63-3: This is another example of File operations-char IO & seeking#
 }
 
 //Topic63-1
@@ -68,6 +85,51 @@ void readFile()
     */
     inFile.close();
     cout << msg << ':' << value << endl;
+    ifstream inChar;
+    inChar.open("testFileOps.txt");
+    if (!inChar)
+    {
+        cout << "Topic63-3, testFileOps.txt not found for reading!" << endl;
+        return;
+    }
+    cout << "Topic63-4, before seekg() current position is: " << inChar.tellg() << endl;
+    /* to change the position of get-ptr use seekg()
+    //seekg() has 2 overload values, offest/position, base position [can have 3 values]
+    1. ios::be() -> beginning 
+    2. ios::cur() -> current position
+    3. ios::end() -> start from end
+    */
+
+    //inChar.seekg(5); //output: 63-3: This is another example of File operations-char IO & seeking   
+    /*
+    output1:
+    Topic63-4, before seekg() current position is: 0
+    Topic63-4, after seekg() current position is: 5
+    63-3: This is another example of File operations-char IO & seeking
+    */    
+    //inChar.seekg(-5, ios::end); // reading file again from last 5th pos from end of file
+    //cout << "Topic63-4, after seekg(-5, ios::end) position is: " << inChar.tellg() << endl;
+    /*
+    output2:
+    Topic63-4, after seekg(-5, ios::end) position is: 66
+    eking
+    */
+    inChar.seekg(10, ios::beg); // reading file again from 10th pos from begin
+    cout << "Topic63-4, after seekg(10, ios::beg) position is: " << inChar.tellg() << endl;
+    
+    /*
+    output3:
+    Topic63-4, after seekg(10, ios::beg) position is: 10
+    This is another example of File operations-char IO & seeking
+    */
+    
+    char ch{};
+    while (inChar.get(ch))
+    {
+        cout << ch; // this will print from location (5)/(-5, end) as per seekg(5)/seek(-5, end)
+    }
+    cout << endl; 
+    inChar.close();   
 }
 
 //Topic63-2: copy utility

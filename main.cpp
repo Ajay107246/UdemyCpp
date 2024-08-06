@@ -3401,6 +3401,17 @@ int main()
 	retCpUitility: 0
 	*/
 
+	/*
+	Topic63-3,4,5,
+    io stream has internally a pointer which points to location of file while R/W.
+    for ifstream -> ptr -> get ptr
+    for ofstream -> ptr -> put ptr
+	if we need to read a file from specific location
+	we have to change position of get ptr
+	to know correct position of get-ptr tellg()
+	to know correct position of put-ptr tellp()
+	please check above writeFile()/readFile() methods
+	*/
 
 
 
