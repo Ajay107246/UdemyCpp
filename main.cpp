@@ -3340,6 +3340,39 @@ int main()
 	NOTE: this need separate project to run and check output at all stages
 	*/
 
+	/* Topic62: Raw String literals (C++11)
+	
+	*/
+	string fileName {"C:\temp\newfile.txt"};
+	/*
+	output:
+	C:    emp
+	ewfile.txt
+	\t and \n from string -> consider as escape sequense
+	to avoid this and skip escape sequenses, need to use extra \ with delimeter
+	*/
+	cout << "fileName: " << fileName << endl;
+	string fileName1 {"C:\\temp\\newfile1.txt"};
+	cout << "valid fileName1: " << fileName1 << endl;
+	/* output:valid fileName1: C:\temp\newfile1.txt
+	this is trdious for long string like html, and xmls
+	use raw string literals -> with regx as well
+
+	*/
+	string fileName2 {R"(C:\temp\newfile2.txt)"};
+	cout << "with str literals, fileName2: " << fileName2 << endl;
+
+	/*
+	output:
+	with str literals, fileName2: C:\temp\newfile2.txt
+	use delimeters to allow use of )", char in string
+	*/
+	string message{R"MSG(C++ intoduced filesytem "(API in C++17)")MSG"};
+	cout << "with delimeters, message: " << message << endl;
+
+	/*
+	output: with delimeters, message: C++ intoduced filesytem "(API in C++17)"
+	*/
 
 
 	/*
