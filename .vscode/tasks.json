@@ -11,7 +11,8 @@
                 "${workspaceFolder}/*.cpp",
                 "${workspaceFolder}\\source\\*.cpp",
                 "-o",
-                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+                "${fileDirname}\\${fileBasenameNoExtension}.exe",
+                "-lstdc++fs"
             ],
             "options": {
                 "cwd": "${fileDirname}"

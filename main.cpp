@@ -30,6 +30,7 @@
 #include <cassert>
 #include <vector>
 #include <typeinfo>
+#include <experimental\filesystem>
 
 #include "oopsConcept.h"
 
@@ -49,6 +50,7 @@
 #include "diamondClass.h"
 //#include "exceptionHandling.hpp"
 #include "header/exceptionHandling.hpp"
+#include "header/fileHandling.hpp"
 
 //Topic18: inline function: MACRO
 #define sumMacro(x,y) x+y
@@ -62,7 +64,7 @@
  */
 using namespace std;
 using namespace string_literals;
-
+using namespace std::experimental::filesystem;
 
 /* Flags and Port PIN */
 bool isSet_GPS_PIN;
@@ -3343,6 +3345,7 @@ int main()
 	/* Topic62: Raw String literals (C++11)
 	
 	*/
+	cout << "\nTopic62, Raw String Literals! " << endl;
 	string fileName {"C:\temp\newfile.txt"};
 	/*
 	output:
@@ -3373,6 +3376,32 @@ int main()
 	/*
 	output: with delimeters, message: C++ intoduced filesytem "(API in C++17)"
 	*/
+
+	/* Topic63-1, File handling and operations*/
+	cout << "\nTopic63, File Operations and Error Handling! " << endl;
+	writeFile();
+	readFile();
+	/*
+	output:
+	Topic63, File Operations and Error Handling!
+	File is open!
+	I/O operation is successful!
+	Hello World!:10
+	*/
+	cout << "\nTopic63-2, File Operations-Copy Utility! " << endl;
+	//add -lstdc++fs in task.json file to build project with experiemental:filesystem
+	int retCpUitility = copyUtility();	
+	cout << "retCpUitility: " << retCpUitility << endl;
+	/*
+	output:
+	if filename/path is wrong -->
+	source(current_path()): "G:\\CPP\\2024\\VSCode\\UdemyCpp"
+	dest(current_path()): "G:\\CPP\\2024\\VSCode\\UdemyCpp\\oopsConcept.txt"
+	dest: oopsConcept.txt file found!
+	retCpUitility: 0
+	*/
+
+
 
 
 	/*
