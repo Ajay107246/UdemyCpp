@@ -51,6 +51,7 @@
 //#include "exceptionHandling.hpp"
 #include "header/exceptionHandling.hpp"
 #include "header/fileHandling.hpp"
+#include "header/binFileHandling.hpp"
 
 //Topic18: inline function: MACRO
 #define sumMacro(x,y) x+y
@@ -3433,6 +3434,41 @@ int main()
 	output3:
 	content from fileStream.txt: Hello world.	
 	*/
+
+	/* Topic63-8: Binary-IO operation from file handler*/
+	cout << "\nTopic63-7, bin-txt operation from file! " << endl;
+	usingBinMode();
+
+	/*
+	binary file will be created in this current directory 
+	value: (75BCD15)H (displayed in reverse order in file)
+	dec value: (123456798)10
+
+	data file with value: 123456798 
+	
+	output:
+	Topic63-7, bin-txt operation from file!
+	num from binary file: 123456789
+	*/
+
+	/*Topic63-8, Binary-IO records operation from file handler!*/
+	cout << "Topic63-8, Binary-IO operation from file handler!" << endl;
+	Record r;
+	r.id = 1001;
+	strcpy_s(r.name, 10, "Records");
+	writeBinRecords(&r);
+
+	Record r2 = getBinRecords();
+	cout << "binRecord R2= " << r2.id << ':' << r2.name << endl;
+
+	/*
+	NOTE: to write multiple records, have to write totol number of records in file
+	then, count how many records present in file, then read the records
+	cause it does not have EOF character, so important to know count of records while writing and reading. 
+	output:
+	binRecord R2= 1001:Records
+	*/
+
 
 	/*
 	Topicxx: Microcontroller, bitwise operation, Register set/clear/reset

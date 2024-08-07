@@ -18,5 +18,7 @@ int copyUtility();
 //Topic63-6
 void usingFstream();
 
+/* Topic63-7: Binary-IO operation from file handlder*/
+//void usingBinMode();
 #pragma endregion
 #endif
