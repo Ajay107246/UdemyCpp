@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 
+
 using namespace std;
 
 //Topic63-1
@@ -170,3 +171,21 @@ int copyUtility()
     return 0;
 }
 
+//Topic63-6
+void usingFstream()
+{
+    fstream fStream {"fileStream.txt"};
+    if (!fStream)   //checking is fileStream.txt exist
+    {
+        cout << "fileStream.txt doesn't exist" << endl;
+        ofstream outOf{"fileStream.txt"};   //create a file
+        outOf.close();  //close it
+        fStream.open("fileStream.txt"); //open the same file
+    }
+    fStream << "Hello world." << endl; //   writing content into file
+    //get/put ptr is at EOF
+    fStream.seekg(0);
+    string lines;
+    getline(fStream, lines);    //reading the file content
+    cout << "content from fileStream.txt: " << lines << endl; 
+}

@@ -3413,7 +3413,26 @@ int main()
 	please check above writeFile()/readFile() methods
 	*/
 
+	//Topic63-6 : IO operation from file
+	cout << "\nTopic63-6, IO operation from file! " << endl;
+	usingFstream();
 
+	/*
+	output1:
+	1. since file wasa not exist, it will create new file here -->
+
+	fileStream.txt doesn't exist
+	content from fileStream.txt: 
+	
+	2. since file is exist, try to read the content of file
+	but unable ro read since get ptr is at EOF, need to shift ptr to SOF
+	using seekg(0);
+	output2:
+	content from fileStream.txt:
+	
+	output3:
+	content from fileStream.txt: Hello world.	
+	*/
 
 	/*
 	Topicxx: Microcontroller, bitwise operation, Register set/clear/reset

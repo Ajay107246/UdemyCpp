@@ -15,6 +15,8 @@ void readFile();
 //Topic63-2
 int copyUtility();
 
+//Topic63-6
+void usingFstream();
 
 #pragma endregion
 #endif
