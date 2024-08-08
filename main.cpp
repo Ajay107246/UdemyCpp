@@ -32,9 +32,10 @@
 #include <typeinfo>
 #include <experimental\filesystem>
 
-#include "oopsConcept.h"
+
 
 //user defined headers
+#include "oopsConcept.h"
 #include "classesObjects.h"
 #include "binaryOperations.h"
 //#include "moveSemantic.h"	//error: segmentation fault at *m_pMoveInt
@@ -52,6 +53,7 @@
 #include "header/exceptionHandling.hpp"
 #include "header/fileHandling.hpp"
 #include "header/binFileHandling.hpp"
+#include "header/templateEx.hpp"
 
 //Topic18: inline function: MACRO
 #define sumMacro(x,y) x+y
@@ -3468,6 +3470,10 @@ int main()
 	output:
 	binRecord R2= 1001:Records
 	*/
+
+	/* Topic64: Templates in c++(11)*/
+	cout << "Topic64: Templates in c++(11)" << endl;
+	allTemplateMethods();
 
 
 	/*
