@@ -1,0 +1,14 @@
+[
+{
+  "directory": "G:/CPP/2024/VSCode/UdemyCpp/build",
+  "command": "D:/msys64/ucrt64/bin/c++.exe   -g -std=gnu++17 -o CMakeFiles/udemycpp.dir/main.cpp.obj -c G:/CPP/2024/VSCode/UdemyCpp/main.cpp",
+  "file": "G:/CPP/2024/VSCode/UdemyCpp/main.cpp",
+  "output": "CMakeFiles/udemycpp.dir/main.cpp.obj"
+},
+{
+  "directory": "G:/CPP/2024/VSCode/UdemyCpp/build",
+  "command": "D:/msys64/ucrt64/bin/c++.exe   -g -std=gnu++17 -o CMakeFiles/udemycpp.dir/classesObjects.cpp.obj -c G:/CPP/2024/VSCode/UdemyCpp/classesObjects.cpp",
+  "file": "G:/CPP/2024/VSCode/UdemyCpp/classesObjects.cpp",
+  "output": "CMakeFiles/udemycpp.dir/classesObjects.cpp.obj"
+}
+]

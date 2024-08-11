@@ -3472,7 +3472,7 @@ int main()
 	*/
 
 	/* Topic64: Templates in c++(11)*/
-	cout << "Topic64: Templates in c++(11)" << endl;
+	cout << "Topic64: Templates and non-typr templates in c++(11)" << endl;
 	allTemplateMethods();
 
 

@@ -12,5 +12,6 @@ void allTemplateMethods();
 template <typename T>
 T MAX(T x, T y);
 
+
 #pragma endregion
 #endif

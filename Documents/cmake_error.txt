@@ -1,0 +1,73 @@
+[proc] Executing command: "C:\\Program Files\\CMake\\bin\\cmake.exe" --build g:/CPP/2024/VSCode/UdemyCpp/build --parallel 6 --
+[build] [ 33%] [32mBuilding CXX object CMakeFiles/udemycpp.dir/main.cpp.obj[0m
+[build] [ 66%] [32mBuilding CXX object CMakeFiles/udemycpp.dir/classesObjects.cpp.obj[0m
+[build] In file included from D:/msys64/ucrt64/include/c++/13.2.0/string:53,
+[build]                  from D:/msys64/ucrt64/include/c++/13.2.0/bits/locale_classes.h:40,
+[build]                  from D:/msys64/ucrt64/include/c++/13.2.0/bits/ios_base.h:41,
+[build]                  from D:/msys64/ucrt64/include/c++/13.2.0/ios:44,
+[build]                  from D:/msys64/ucrt64/include/c++/13.2.0/ostream:40,
+[build]                  from D:/msys64/ucrt64/include/c++/13.2.0/iostream:41,
+[build]                  from G:/CPP/2024/VSCode/UdemyCpp/classesObjects.cpp:31:
+[build] D:/msys64/ucrt64/include/c++/13.2.0/bits/range_access.h:95:5: error: expected constructor, destructor, or type conversion before 'inline'
+[build]    95 |     inline _GLIBCXX14_CONSTEXPR _Tp*
+[build]       |     ^~~~~~
+[build] make[2]: *** [CMakeFiles/udemycpp.dir/build.make:90: CMakeFiles/udemycpp.dir/classesObjects.cpp.obj] Error 1
+[build] make[2]: *** Waiting for unfinished jobs....
+[build] In file included from D:/msys64/ucrt64/include/c++/13.2.0/string:53,
+[build]                  from D:/msys64/ucrt64/include/c++/13.2.0/bits/locale_classes.h:40,
+[build]                  from D:/msys64/ucrt64/include/c++/13.2.0/bits/ios_base.h:41,
+[build]                  from D:/msys64/ucrt64/include/c++/13.2.0/ios:44,
+[build]                  from D:/msys64/ucrt64/include/c++/13.2.0/ostream:40,
+[build]                  from D:/msys64/ucrt64/include/c++/13.2.0/iostream:41,
+[build]                  from G:/CPP/2024/VSCode/UdemyCpp/main.cpp:17:
+[build] D:/msys64/ucrt64/include/c++/13.2.0/bits/range_access.h:95:5: error: expected constructor, destructor, or type conversion before 'inline'
+[build]    95 |     inline _GLIBCXX14_CONSTEXPR _Tp*
+[build]       |     ^~~~~~
+[build] G:/CPP/2024/VSCode/UdemyCpp/main.cpp: In function 'int main()':
+[build] G:/CPP/2024/VSCode/UdemyCpp/main.cpp:1115:32: error: no matching function for call to 'begin(int [5])'
+[build]  1115 |         int *begin = std::begin(arr1); //&arr1[0]; similar to container
+[build]       |                      ~~~~~~~~~~^~~~~~
+[build] In file included from D:/msys64/ucrt64/include/c++/13.2.0/bits/range_access.h:36:
+[build] D:/msys64/ucrt64/include/c++/13.2.0/initializer_list:88:5: note: candidate: 'template<class _Tp> constexpr const _Tp* std::begin(initializer_list<_Tp>)'
+[build]    88 |     begin(initializer_list<_Tp> __ils) noexcept
+[build]       |     ^~~~~
+[build] D:/msys64/ucrt64/include/c++/13.2.0/initializer_list:88:5: note:   template argument deduction/substitution failed:
+[build] G:/CPP/2024/VSCode/UdemyCpp/main.cpp:1115:32: note:   mismatched types 'std::initializer_list<_Tp>' and 'int*'
+[build]  1115 |         int *begin = std::begin(arr1); //&arr1[0]; similar to container
+[build]       |                      ~~~~~~~~~~^~~~~~
+[build] D:/msys64/ucrt64/include/c++/13.2.0/bits/range_access.h:52:5: note: candidate: 'template<class _Container> constexpr decltype (__cont.begin()) std::begin(_Container&)'
+[build]    52 |     begin(_Container& __cont) -> decltype(__cont.begin())
+[build]       |     ^~~~~
+[build] D:/msys64/ucrt64/include/c++/13.2.0/bits/range_access.h:52:5: note:   template argument deduction/substitution failed:
+[build] D:/msys64/ucrt64/include/c++/13.2.0/bits/range_access.h: In substitution of 'template<class _Container> constexpr decltype (__cont.begin()) std::begin(_Container&) [with _Container = int [5]]':
+[build] G:/CPP/2024/VSCode/UdemyCpp/main.cpp:1115:25:   required from here
+[build] D:/msys64/ucrt64/include/c++/13.2.0/bits/range_access.h:52:50: error: request for member 'begin' in '__cont', which is of non-class type 'int [5]'
+[build]    52 |     begin(_Container& __cont) -> decltype(__cont.begin())
+[build]       |                                           ~~~~~~~^~~~~
+[build] D:/msys64/ucrt64/include/c++/13.2.0/bits/range_access.h:63:5: note: candidate: 'template<class _Container> constexpr decltype (__cont.begin()) std::begin(const _Container&)'
+[build]    63 |     begin(const _Container& __cont) -> decltype(__cont.begin())
+[build]       |     ^~~~~
+[build] D:/msys64/ucrt64/include/c++/13.2.0/bits/range_access.h:63:5: note:   template argument deduction/substitution failed:
+[build] D:/msys64/ucrt64/include/c++/13.2.0/bits/range_access.h: In substitution of 'template<class _Container> constexpr decltype (__cont.begin()) std::begin(const _Container&) [with _Container = int [5]]':
+[build] G:/CPP/2024/VSCode/UdemyCpp/main.cpp:1115:25:   required from here
+[build] D:/msys64/ucrt64/include/c++/13.2.0/bits/range_access.h:63:56: error: request for member 'begin' in '__cont', which is of non-class type 'const int [5]'
+[build]    63 |     begin(const _Container& __cont) -> decltype(__cont.begin())
+[build]       |                                                 ~~~~~~~^~~~~
+[build] D:/msys64/ucrt64/include/c++/13.2.0/bits/range_access.h:113:31: note: candidate: 'template<class _Tp> _Tp* std::begin(valarray<_Tp>&)'
+[build]   113 |   template<typename _Tp> _Tp* begin(valarray<_Tp>&) noexcept;
+[build]       |                               ^~~~~
+[build] D:/msys64/ucrt64/include/c++/13.2.0/bits/range_access.h:113:31: note:   template argument deduction/substitution failed:
+[build] G:/CPP/2024/VSCode/UdemyCpp/main.cpp:1115:32: note:   mismatched types 'std::valarray<_Tp>' and 'int [5]'
+[build]  1115 |         int *begin = std::begin(arr1); //&arr1[0]; similar to container
+[build]       |                      ~~~~~~~~~~^~~~~~
+[build] D:/msys64/ucrt64/include/c++/13.2.0/bits/range_access.h:114:37: note: candidate: 'template<class _Tp> const _Tp* std::begin(const valarray<_Tp>&)'
+[build]   114 |   template<typename _Tp> const _Tp* begin(const valarray<_Tp>&) noexcept;
+[build]       |                                     ^~~~~
+[build] D:/msys64/ucrt64/include/c++/13.2.0/bits/range_access.h:114:37: note:   template argument deduction/substitution failed:
+[build] G:/CPP/2024/VSCode/UdemyCpp/main.cpp:1115:32: note:   mismatched types 'const std::valarray<_Tp>' and 'int [5]'
+[build]  1115 |         int *begin = std::begin(arr1); //&arr1[0]; similar to container
+[build]       |                      ~~~~~~~~~~^~~~~~
+[build] make[2]: *** [CMakeFiles/udemycpp.dir/build.make:76: CMakeFiles/udemycpp.dir/main.cpp.obj] Error 1
+[build] make[1]: *** [CMakeFiles/Makefile2:83: CMakeFiles/udemycpp.dir/all] Error 2
+[build] make: *** [Makefile:91: all] Error 2
+[proc] The command: "C:\\Program Files\\CMake\\bin\\cmake.exe" --build g:/CPP/2024/VSCode/UdemyCpp/build --parallel 6 -- exited with code: 2
