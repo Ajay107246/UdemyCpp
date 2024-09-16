@@ -33,6 +33,7 @@ public:
         cout << "perfect_forwarding(T1 &&name,T2 &&id)" << endl;
     }
     
+    
     //~perfect_forwarding();
 };
 
@@ -61,7 +62,7 @@ perfect_forwarding *createForward(T1 && a, T2 &&b)
 // inline perfect_forwarding::perfect_forwarding(T1 &&name, T2 &&id): m_Id {id}, m_forName {name}
 // {
 // }
-
+void all_perfectForward_methods();
 
 #endif //PERFECT_FORWARDING__H
 

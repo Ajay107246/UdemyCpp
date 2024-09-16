@@ -1,7 +1,6 @@
 #include "../header/perfect_forwarding.hpp"
 
 
-
 using namespace std;
 
 /*
@@ -103,3 +102,25 @@ perfect_forwarding::perfect_forwarding(std::string &&name, Integer_forward &&id)
     take advantage of perfect forwarding when function template is invoking some other function template internally.
     and want to preserved information about the types.
 */
+
+void all_perfectForward_methods()
+{
+    //case1:
+	cout << "case1, Perfect Forwarding!" << endl;
+	perfect_forwarding pFor1{"case1", 100};	//temp values
+	//case2:
+	cout << "case2, Perfect Forwarding!" << endl;
+	string case2 {"case2"};
+	perfect_forwarding pFor2{case2, 200};	//100: temp values, copy constr invoked from Integer_forward class 
+	cout << "case3, Perfect Forwarding!" << endl;
+	string case3 {"case3"};
+	Integer_forward intVal {300};
+	perfect_forwarding pFor3{"case3", intVal};	//need function template for all constr
+	cout << "case4, Perfect Forwarding!" << endl;
+	perfect_forwarding pFor4{"case4", Integer_forward{400}};	//need function template for all constr
+	cout << "case5, Perfect Forwarding!" << endl;
+	Integer_forward intVal5 {500};
+	perfect_forwarding pFor5{string{"case5"}, intVal5};	//{r-value:move constr invoked here, l-value: copy constr invoked here}
+	cout << "case6, Perfect Forwarding!" << endl;
+	auto pFor6 = createForward("case6", Integer_forward{600});	//case 6 & 6-1 to invoked move constr instead copy constr for Integer_forward
+}
