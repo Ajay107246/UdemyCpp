@@ -41,7 +41,7 @@ void PrintVariadic()
 //Template param pack
 template<typename T, typename... Params>
 //Function parma pack
-void PrintVariadic(const T &a, const Params&... args)
+void PrintVariadic(T &&a, Params&&... args)
 {
     /* 
         1. using variadic template with any number of type and args
@@ -96,12 +96,19 @@ void PrintVariadic(const T &a, const Params&... args)
         cout << ',';
     }
     
-    PrintVariadic(args...); //Integer_forward {2} -> passing as R-value, in recursive call, it became L-value
+    /*
+        Integer_forward {2} -> passing as R-value, in recursive call, it became L-value
+        -> whether pass R/L-value, they will appropriately forwarded to next recursive call
+    */
+    PrintVariadic(std::forward<Params>(args)...); 
 
     /*
         if we pass user defined types to function then multiple copies created
         we are passing by value, now pass pass by const reference
-        
+        use perfect forwarding here ->
+        now replace L-value reference arg to R-value reference.
+        void PrintVariadic(const T &a, const Params&... args) -> void PrintVariadic(T &&a, Params&... args)
+
         
     */
 }
@@ -121,3 +128,26 @@ void all_variadicTemplates_method();
 
 #endif //VARIADICTEMPLATE__H
 #pragma endregion
+
+/*
+Assignement:
+Create a factory that creates an instance of some type T, initializes it with arguments and returns it.
+
+Here are some usage examples of the factory.
+
+int *p1 = CreateObject<int>(5) ;
+ 
+std::string *s = CreateObject<std::string>() ;//Default construction
+ 
+Employee * emp = CreateObject<Employee>(
+"Bob",    //Name
+101,      //Id
+1000) ;   //Salary
+ 
+Contact *p = CreateObject<Contact>(
+"Joey",                //Name
+987654321,             //Phone number
+"Boulevard Road, Sgr", //Address
+"joey@poash.com") ;    //Email
+
+*/
