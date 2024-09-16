@@ -35,12 +35,13 @@ void PrintVariadic()
         collect2.exe: error: ld returned 1 exit status
         Build finished with error(s)
     */
+    cout << endl; 
 }
 
 //Template param pack
 template<typename T, typename... Params>
 //Function parma pack
-void PrintVariadic(T a, Params... args)
+void PrintVariadic(const T &a, const Params&... args)
 {
     /* 
         1. using variadic template with any number of type and args
@@ -84,8 +85,25 @@ void PrintVariadic(T a, Params... args)
             and we dnt have a such function, but we can write PrintVariadic() with no args,
             this function will be act as base case function to stop recursion
     */
-   PrintVariadic(args...);
+    cout << sizeof...(args) << endl; //3 2 1 0
+    cout << sizeof...(Params) << endl; //3 2 1 0
+    // cout << a << ',' ; // 12.534, need ',' seperator, but this will print extra , at end
+    // we can avoid printing extra seperator by using variadic sizeof operator
+    // can be used to count num of args in function param pack and template param pack.
+    std::cout << a;
+    if (sizeof...(args) != 0)
+    {
+        cout << ',';
+    }
+    
+    PrintVariadic(args...); //Integer_forward {2} -> passing as R-value, in recursive call, it became L-value
 
+    /*
+        if we pass user defined types to function then multiple copies created
+        we are passing by value, now pass pass by const reference
+        
+        
+    */
 }
 
 
