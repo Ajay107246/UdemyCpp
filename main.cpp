@@ -58,7 +58,7 @@
 //#include "header/Integer_forward.h"
 #include "header/perfect_forwarding.hpp"
 #include "header/variadicTemplates.hpp"
-
+#include "header/classTemplate.hpp"
 
 //Topic18: inline function: MACRO
 #define sumMacro(x,y) x+y
@@ -3498,9 +3498,8 @@ int main()
 	/*
 		
 	*/
-	// classTemplate cTemplate;
-	//cTemplate.all_ClassTemplates_method();
-	// cTemplate.all_classTemplate_methods();
+	classTemplate cTemplate;
+	cTemplate.all_classTemplate_methods();
 
 	/*
 	Topicxx: Microcontroller, bitwise operation, Register set/clear/reset
