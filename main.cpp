@@ -59,6 +59,7 @@
 #include "header/perfect_forwarding.hpp"
 #include "header/variadicTemplates.hpp"
 
+
 //Topic18: inline function: MACRO
 #define sumMacro(x,y) x+y
 #define sqMacro(x) x*x
@@ -3490,8 +3491,16 @@ int main()
 		Variadic template can be simplified with C++17 in fold expression
 	*/
 
-	all_variadicTemplates_method();
+	all_variadicTemplates_method(); //need fix for error
 	
+
+	cout << "\nTopic67: Class Templates in c++" << endl;
+	/*
+		
+	*/
+	// classTemplate cTemplate;
+	//cTemplate.all_ClassTemplates_method();
+	// cTemplate.all_classTemplate_methods();
 
 	/*
 	Topicxx: Microcontroller, bitwise operation, Register set/clear/reset

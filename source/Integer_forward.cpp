@@ -1,5 +1,6 @@
 #include "../header/Integer_forward.hpp"
 
+
 using namespace std;
 /*
 Purpose: This constructor initializes the Integer_forward object with a default value.
@@ -66,4 +67,11 @@ Integer_forward::~Integer_forward()
 {
     cout << "Integer_forward::~Integer_forward()" << endl;
     delete m_pInt;
+}
+
+ostream &operator<<(ostream &os, Integer_forward &obj)
+{
+    // TODO: insert return statement here
+    os << obj.getForwardValue();
+    return os;
 }

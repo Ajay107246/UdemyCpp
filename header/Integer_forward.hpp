@@ -4,6 +4,8 @@
 
 #include <iostream>
 
+using namespace std;
+
 class Integer_forward
 {
     int *m_pInt;
@@ -19,6 +21,9 @@ class Integer_forward
 
     //move constr
     Integer_forward(Integer_forward &&obj);
+
+    //operator<< as friend function
+    friend ostream& operator<<(ostream& os, Integer_forward& obj);
 
     int getForwardValue()const;
     void setForwardValue(int value);

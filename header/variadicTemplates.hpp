@@ -26,17 +26,7 @@ using namespace std;
 
 */
 
-//function to stop recursion once num of args = 0 
-void PrintVariadic()
-{   
-    /*  leads to error: 
-        multiple definition of `PrintVariadic()'; C:\Users\Shimpi\AppData\Local\Temp\cc5oVYX1.o:G:/CPP/2024/VSCode/UdemyCpp/header/
-        variadicTemplates.hpp:31: first defined here
-        collect2.exe: error: ld returned 1 exit status
-        Build finished with error(s)
-    */
-    cout << endl; 
-}
+inline void PrintVariadic();
 
 //Template param pack
 template<typename T, typename... Params>
@@ -85,12 +75,34 @@ void PrintVariadic(T &&a, Params&&... args)
             and we dnt have a such function, but we can write PrintVariadic() with no args,
             this function will be act as base case function to stop recursion
     */
-    cout << sizeof...(args) << endl; //3 2 1 0
-    cout << sizeof...(Params) << endl; //3 2 1 0
+    //cout << sizeof...(args) << endl; //3 2 1 0
+    //cout << sizeof...(Params) << endl; //3 2 1 0
     // cout << a << ',' ; // 12.534, need ',' seperator, but this will print extra , at end
     // we can avoid printing extra seperator by using variadic sizeof operator
     // can be used to count num of args in function param pack and template param pack.
-    std::cout << a;
+    
+    /*
+        error: //no type named 'type' in 'struct std::enable_if<false, void>', 
+        no match for 'operator<<' (operand types are 'std::ostream' {aka 'std::basic_ostream<char>'} and 'Integer_forward')
+
+        **solution**: error resolved by adding operator<< method in Integer_forward class.
+        this is to allow it access to the private members of the Integer_forward class
+        link: https://sl.bing.net/bdpRc5IAQvs 
+
+        INFO:
+        Access to Private Members: By making operator<< a friend function,
+        it can directly access the private member value of the Integer_forward class.
+        This is necessary because operator<< needs to output the value stored in the Integer_forward object.
+        
+        Encapsulation: Even though the friend function has access to private members,
+        it doesn’t break encapsulation because it’s a controlled way to allow specific external functions to access private data.
+        This is better than making the member public just for the sake of one function.
+        
+        Consistency: Defining operator<< as a friend function ensures that the 
+        syntax for outputting Integer_forward objects is consistent with other types in C++. 
+        It allows you to use std::cout << obj; seamlessly.
+    */
+    std::cout << a; 
     if (sizeof...(args) != 0)
     {
         cout << ',';
