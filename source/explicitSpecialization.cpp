@@ -105,6 +105,31 @@ void all_explicitSpecialization_methods()
         Topic68: Explicit Specialization Class Templates in c++
         {String explicit Specialization}    
     */
+
+   // 68-3, explicit specialization for vector
+   std::cout << "\n 68-3, explicit specialization for vector" << std::endl;
+   std::vector<int> v_special{1,2,3,4};
+   explicitSpecialization<std::vector<int>> ex_vecSpecial(&v_special);
+   ex_vecSpecial.Print();
+   /*
+    above line #111, 112 does not work without specialization of class with vector type
+    cause m_pData is ptr to vector and when apply * (asterisk), 
+    it will return vector object itself
+    << operator not overloaded this class
+    
+    need explicite specialization of this class for vector
+    similar to what is done for char* in header
+
+    output: 68-3
+    68-3, explicit specialization for vector
+    {1234}
+
+    --> instead of specializing the entire class for vector,
+    just specialized the member fuction Print()
+    write specialized member fuction Print() with type vector
+    this method written outside of the class
+    NOTE: check header file for the same
+    */
 }
 
 // Explicit instantiation
