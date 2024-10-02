@@ -59,6 +59,7 @@
 #include "header/perfect_forwarding.hpp"
 #include "header/variadicTemplates.hpp"
 #include "header/classTemplate.hpp"
+#include "header/explicitSpecialization.hpp"
 
 //Topic18: inline function: MACRO
 #define sumMacro(x,y) x+y
@@ -3500,6 +3501,10 @@ int main()
 	*/
 	classTemplate cTemplate;
 	cTemplate.all_classTemplate_methods();
+
+	cout << "\nTopic68: Explicit Specialization Class Templates in c++" << endl;
+	all_explicitSpecialization_methods();
+
 
 	/*
 	Topicxx: Microcontroller, bitwise operation, Register set/clear/reset
