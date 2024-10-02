@@ -31,7 +31,7 @@ explicitSpecialization<T>::~explicitSpecialization()
 
 void all_explicitSpecialization_methods()
 {
-    
+    /* //68-2
     int i_Data = 5;
     float f_Data = 8.2f;
     explicitSpecialization<int> i_eSpecial(&i_Data);    // class template works with int type
@@ -46,7 +46,7 @@ void all_explicitSpecialization_methods()
         {5}
         {8.2}
     */
-
+    /*  //68-2
     //const char * - for string literals
     char *s_Str{"String Specialization"};   //warn: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]gcc
     /* 
@@ -57,6 +57,7 @@ void all_explicitSpecialization_methods()
         and declaration become T** -> T *m_pData;
         here, only ptr char* is passed with s_Str -> need to pass with char** -> (&s_Str)
     */
+    /* //68-2
     explicitSpecialization<char*> s_eSpecial(&s_Str);
     s_eSpecial.Print();
     /*
@@ -79,9 +80,11 @@ void all_explicitSpecialization_methods()
         so explicitSpecialization<char*> /explicitSpecialization<char> does not give correct results
 
     */
+    /* //68-2
     char **s_eGetdata = s_eSpecial.getData();
     std::cout << "**s_eGetdata for char*: " << **s_eGetdata << std::endl;   
-
+    char *s_eData = s_eSpecial.getData();
+    std::cout << "*s_eData for char*: " << *s_eData << std::endl;   
     /*
         output:
         **s_eGetdata for char*: S
@@ -89,7 +92,19 @@ void all_explicitSpecialization_methods()
         need to create explicite specialization for string type  
         
     */
- 
+    //NOTE: "Need to comment out previous int and float section due to char*
+    char *s_specialStr{"String explicit Specialization"};   // warning: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+    explicitSpecialization<char*> s_explicitSpecial(s_specialStr);
+    // s_explicitSpecial.printExplicitSpecial();
+    s_explicitSpecial.Print();
+    // char *pData = s_explicitSpecial.getExplicitData();
+    char *pData = s_explicitSpecial.getData();
+
+    /*
+        output: 68-2
+        Topic68: Explicit Specialization Class Templates in c++
+        {String explicit Specialization}    
+    */
 }
 
 // Explicit instantiation
