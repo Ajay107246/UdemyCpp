@@ -65,4 +65,52 @@ void all_partial_specialization_methods()
         Using 80 columns:
         {900}
     */
+    std::cout << "\nTopic69-3, partial specialization with Smart Pointer" << std::endl;
+    SmartPointer<int> s_ptr{new int(3)};
+    std::cout << "*s_ptr: " << *s_ptr << std::endl; //output: *s_ptr: 3
+
+    /*
+        smart pointer with dynamic array
+        e.g.
+        SmartPointer<int> s_ptr{new int[5]};
+
+        need change simple integer pointer to integer array
+        smartPointer holds a ptr to an array and class won't give correct semantics
+        and behaviour for this smart ptr when it internally points to integer array.
+
+        firstly, we cannot access the elements of array using this smart ptr
+        implementation of destructor as above is not correct and need modifications
+        should use delete[] for arrays
+        partially specialized SmartPointer class for array type
+        
+        need to write new class SmartPointer with array type
+        NOTE: chk header
+
+        T * operator -> , T & operator *()  operators won't make sense to use
+        replaced with overloaded subscript operator
+    
+        instance of class which hold an array
+        then specify arg as an array with class: SmartPointer<int[]>
+        meaning: SmartPointer is instantiated for an array type
+
+        Compiler will choose partial specialization
+    */
+    std::cout << "\nTopic69-4, partial specialization, Smart Pointer with dynamic array" << std::endl;
+    SmartPointer<int[]> s_arrayPtr{new int[5]};
+    // std::cout << "*s_arrayPtr :" << *s_arrayPtr << std::endl;    //*s_arrayPtr : won't work here, use subscript operator
+    s_arrayPtr[0] = 5;  //use subscript operator with array
+    std::cout << "s_arrayPtr[0] :" << s_arrayPtr[0] << std::endl;
+
+    /*
+        output:
+        Topic69-3, partial specialization with Smart Pointer
+        *s_ptr: 3
+        Topic69-4, partial specialization, Smart Pointer with dynamic array
+        s_arrayPtr[0] :5
+
+        NOTE:
+        Object: The actual entity created from a class, existing in memory.
+        Instance: The specific realization of a class, essentially the same as an object 
+        but emphasizing the creation process.
+    */
 }
