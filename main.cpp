@@ -60,6 +60,7 @@
 #include "header/variadicTemplates.hpp"
 #include "header/classTemplate.hpp"
 #include "header/explicitSpecialization.hpp"
+#include "header/partialSpecialization.hpp"
 
 //Topic18: inline function: MACRO
 #define sumMacro(x,y) x+y
@@ -3504,6 +3505,8 @@ int main()
 
 	cout << "\nTopic68: Explicit Specialization Class Templates in c++" << endl;
 	all_explicitSpecialization_methods();
+
+	all_partial_specialization_methods();
 
 
 	/*
