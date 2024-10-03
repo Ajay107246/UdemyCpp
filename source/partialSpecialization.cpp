@@ -17,7 +17,6 @@ T *partialSpecialization<T, columns>::getPartialData()
 
 void all_partial_specialization_methods()
 {
-    std::cout << "\n 69, partial vs explicit specialization for vector" << std::endl;
     /*
         In explicit specialization, all the template parameters are specialized
         In partial specialization, only some of the template parameters are specialized

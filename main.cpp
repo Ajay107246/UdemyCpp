@@ -61,6 +61,7 @@
 #include "header/classTemplate.hpp"
 #include "header/explicitSpecialization.hpp"
 #include "header/partialSpecialization.hpp"
+#include "header/typedefAliasTemplate.hpp"
 
 //Topic18: inline function: MACRO
 #define sumMacro(x,y) x+y
@@ -3506,9 +3507,14 @@ int main()
 	cout << "\nTopic68: Explicit Specialization Class Templates in c++" << endl;
 	all_explicitSpecialization_methods();
 
+	std::cout << "\nTopic69, partial vs explicit specialization for vector" << std::endl;
 	all_partial_specialization_methods();
 
+	std::cout << "\nTopic70, typedef type Alias with Template in c++" << std::endl;
+	all_typedefAliasTemplate_methods();
 
+
+	
 	/*
 	Topicxx: Microcontroller, bitwise operation, Register set/clear/reset
 	*/
