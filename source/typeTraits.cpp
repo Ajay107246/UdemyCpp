@@ -13,6 +13,7 @@ inline T devide(T a, T b)
         at runtim, know that non/floating point type is arg are passed in devide()
         compiler should not compile the code, its more desirable cause chk will perform at compiler time
     */
+    static_assert(is_floating_point<T>::value, "use floating point types only");  //static assertion failed: use floating point types only, use float
     if (is_floating_point<T>::value == false)
     {
         cout << "use floating point types!" << endl;
@@ -68,7 +69,7 @@ void all_type_traits_methods()
         
         check devide() -> if() condition
     */
-    cout << devide(5,2) << endl;
+    cout << devide(5.5,2.2) << endl;
 
     check(5);
     int value{};
