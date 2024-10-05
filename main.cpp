@@ -62,6 +62,7 @@
 #include "header/explicitSpecialization.hpp"
 #include "header/partialSpecialization.hpp"
 #include "header/typedefAliasTemplate.hpp"
+#include "header/typeTraits.hpp"
 
 //Topic18: inline function: MACRO
 #define sumMacro(x,y) x+y
@@ -3513,7 +3514,8 @@ int main()
 	std::cout << "\nTopic70, typedef type Alias with Template in c++" << std::endl;
 	all_typedefAliasTemplate_methods();
 
-
+	std::cout << "\nTopic71, type traits with Template in c++" << std::endl;
+	all_type_traits_methods();
 	
 	/*
 	Topicxx: Microcontroller, bitwise operation, Register set/clear/reset
