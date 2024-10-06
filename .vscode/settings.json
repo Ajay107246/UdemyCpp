@@ -60,6 +60,7 @@
         "sstream": "cpp",
         "fstream": "cpp",
         "text_encoding": "cpp",
-        "codecvt": "cpp"
+        "codecvt": "cpp",
+        "list": "cpp"
     }
 }

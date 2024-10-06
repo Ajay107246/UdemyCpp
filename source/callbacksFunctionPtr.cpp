@@ -4,7 +4,7 @@
 /*
     73-2, added function ptr prototype and second arg for sort(), and modify condition
 */
-template <typename T, int size>
+template <typename T, int size, typename comparator>
 inline void sort(T (&arr)[size], comparator comp)
 {
     for (int i = 0; i < size-1; ++i)
@@ -66,6 +66,60 @@ bool CompDisc(int x, int y)
 */
 void all_callbacksFunctionPtr_methods() 
 {
+    /*
+        Topic73: callbacks function objects
+        to invoke function call operator, first create an instance of struct and invoke function call
+        CompAsc(5,3);//Global function call
+        CompAsc(5,3); //member function call, internally resolve as CompAsc.operator()(5,3); obj.opearator(operator itself)(args...); 
+        in sort(), comp(arr[j],arr[j+1]) -> comp is ptr to function
+        if generalize this thing, also use function object here, and possible by converting this Comparator into template type
+        
+        comment out alias and specify one more template arg 
+        template<typename T, int size, typename Comparator> : type of Comparator is unknwon until invoke sort() function
+        
+        for invokation of sort() function, sort(arr, CompDisc); -> CompDisc is address of function, type -> function ptr
+        no changes are needed in sort() function invication
+
+        inlining the function operator() call and optiomize the code.
+        instead of inlined, advantage of function object as callback -> its faster than function ptr
+        CompAsc -> object, instance of struct
+        meaning : it can have a state, possible to store sime state different invocations of this function
+        function objects have a state, while global function do not have a state
+        in STL, algo that take a callback can either accept a function ptr or function object as callback.
+        in most cases, function objects is preferable to pass cause its more efficient
+
+        RECALL:
+        1. function object:
+        object with overloaded function call operator -> functor
+        call to overloaded function call operator resembles a global function call
+        i.y. function object can be used as callback instead of  function ptr with templates
+        its more efficient than function ptr
+        function object -> implemented as struct rather than classes
+        
+        invoked through an object
+        static in nature
+        must be specified at compiler time
+        easy to optiomize
+        fast
+        can store state 
+        
+        **in c++11, there is better way to implements callbacks through lambda expression**
+
+        2. function ptr:
+        invoked through a ptr
+        dynamic in nature
+        can be specified at runtime
+        difficult to optimize cause function is invoked through address
+        its slow cause dynamic in nature
+        cannot store state
+
+    */
+    CompAsc(5,3);//Global function call
+    callbacksFunctionObject CompAsc;// call_fObj;
+    // call_fObj(5,3); //internally resolve as call_fObj.operator()(5,3); obj.opearator(operator itself)(args...); 
+    CompAsc(5,3); //member function call, internally resolve as CompAsc.operator()(5,3); obj.opearator(operator itself)(args...); 
+
+    /* Topic72: callbacks function ptr  */
     int arr[]{9,5,1,7,0,6};
     for (auto x: arr)
     {

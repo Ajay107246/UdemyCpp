@@ -17,12 +17,31 @@
 
 
 */
-using comparator = bool(*)(int, int);
+//using comparator = bool(*)(int, int); //comment out for topic73: Callback function object, and added 3rd arg in template
 
 bool CompAsc(int x, int y);
 bool CompDisc(int x, int y);
 
-template<typename T, int size>
+/*
+    Topic73: callbacks function objects (lymbda expression)
+    function object - obj of class/struct that has function call operator overloaded
+    in below struct, overload function call operator
+    compare its usage with usage of normal function.
+
+    invoke CompAsc() -> check all_callbacksFunctionPtr_methods()
+
+*/
+
+struct callbacksFunctionObject
+{
+    bool operator()(int x, int y)
+    {
+        return x > y;
+    }
+};
+
+
+template<typename T, int size, typename comparator> //type of comparator is unknown until sort() is invoked
 void sort(T(&arr)[size]);
 
 void all_callbacksFunctionPtr_methods();
