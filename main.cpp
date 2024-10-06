@@ -64,6 +64,7 @@
 #include "header/typedefAliasTemplate.hpp"
 #include "header/typeTraits.hpp"
 #include "header/staticAssert.hpp"
+#include "header/callbacksFunctionPtr.hpp"
 
 //Topic18: inline function: MACRO
 #define sumMacro(x,y) x+y
@@ -3520,6 +3521,9 @@ int main()
 
 	std::cout << "\nTopic72, static_assert with type traits" << std::endl;
 	all_static_assert_methods();
+
+	std::cout << "\nTopic73, callbacks - funtion pointer revisit for lymbda expression" << std::endl;
+	all_callbacksFunctionPtr_methods();
 	
 	/*
 	Topicxx: Microcontroller, bitwise operation, Register set/clear/reset
