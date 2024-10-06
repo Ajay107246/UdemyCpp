@@ -7,9 +7,21 @@
     this is simple sorting algorithm that performs comparision of elements
 
     this function sort only in ascending order, and what if we need descending, or raw c-style string
-    comparision operator won't work on strings, cause it'll compare address.
+    comparison operator won't work on strings, cause it'll compare address.
+
+    need to work on > operator to generalize expression and perform comparison on any data type (>/<)
+    implement using function pointer by modifying signature of sort() to accept one more param that ptr to function
+    that function implemented by usr of sort() algorithm
+    they will decide how to compare the elements
+    added prototype comparator here in header
+
 
 */
+using comparator = bool(*)(int, int);
+
+bool CompAsc(int x, int y);
+bool CompDisc(int x, int y);
+
 template<typename T, int size>
 void sort(T(&arr)[size]);
 
