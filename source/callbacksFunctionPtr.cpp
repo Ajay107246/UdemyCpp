@@ -3,6 +3,7 @@
 
 /*
     73-2, added function ptr prototype and second arg for sort(), and modify condition
+    73-3, Callback function object, and added 3rd arg in template
 */
 template <typename T, int size, typename comparator>
 inline void sort(T (&arr)[size], comparator comp)
@@ -67,7 +68,7 @@ bool CompDisc(int x, int y)
 void all_callbacksFunctionPtr_methods() 
 {
     /*
-        Topic73: callbacks function objects
+        Topic73-3: callbacks function objects
         to invoke function call operator, first create an instance of struct and invoke function call
         CompAsc(5,3);//Global function call
         CompAsc(5,3); //member function call, internally resolve as CompAsc.operator()(5,3); obj.opearator(operator itself)(args...); 
@@ -143,6 +144,10 @@ void all_callbacksFunctionPtr_methods()
 
         output:
         Topic73, callbacks - funtion pointer revisit for lymbda expression
+        9 5 1 7 0 6
+        9 7 6 5 1 0
+
+        Topic73, callbacks - funtion pointer & object (fast) revisit for lambda expression
         9 5 1 7 0 6
         9 7 6 5 1 0
     */

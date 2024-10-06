@@ -3522,7 +3522,7 @@ int main()
 	std::cout << "\nTopic72, static_assert with type traits" << std::endl;
 	all_static_assert_methods();
 
-	std::cout << "\nTopic73, callbacks - funtion pointer revisit for lymbda expression" << std::endl;
+	std::cout << "\nTopic73, callbacks - funtion pointer & object (fast) revisit for lambda expression" << std::endl;
 	all_callbacksFunctionPtr_methods();
 	
 	/*

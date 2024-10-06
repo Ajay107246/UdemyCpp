@@ -17,13 +17,13 @@
 
 
 */
-//using comparator = bool(*)(int, int); //comment out for topic73: Callback function object, and added 3rd arg in template
+//using comparator = bool(*)(int, int); //comment out for topic73-3: Callback function object, and added 3rd arg in template
 
 bool CompAsc(int x, int y);
 bool CompDisc(int x, int y);
 
 /*
-    Topic73: callbacks function objects (lymbda expression)
+    Topic72-3: callbacks function objects (lambda expression)
     function object - obj of class/struct that has function call operator overloaded
     in below struct, overload function call operator
     compare its usage with usage of normal function.
