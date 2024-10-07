@@ -3,6 +3,8 @@
 #define LAMBDAEXPRESSIONS__H    
 
 #include <iostream>
+#include<typeinfo>  //74-3: type for fnLambda
+#include<cxxabi.h>
 
 /*
     description: 
