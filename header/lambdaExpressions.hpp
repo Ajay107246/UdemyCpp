@@ -23,15 +23,18 @@
     e.g. syntax:
     [](<args>)<mutable><excp specification> -> <return type>
     {
-    }
+    }();
 
     []                      lambda introducer, signifies start of lambda expression, contains a capture clause
     (<args>)                optional
     <mutable>               optional, specifications called mutable, since lambda expression behaves like a function, can optionally specify an exception specification
     <excp specification> 
     <return type>           To specify return type of lambda expression, trailing return type syntax        
-    
+    {}                      body of lambda expression
+    ()                      to invoke lambda expression
     check source, all_lambda_expressions_methods() for more implementation details 
+
+    
 */ 
 void all_lambda_expressions_methods();
 #endif //LAMBDAEXPRESSIONS__H    
