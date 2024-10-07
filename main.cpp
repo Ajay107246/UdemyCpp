@@ -65,6 +65,7 @@
 #include "header/typeTraits.hpp"
 #include "header/staticAssert.hpp"
 #include "header/callbacksFunctionPtr.hpp"
+#include "header/lambdaExpressions.hpp"
 
 //Topic18: inline function: MACRO
 #define sumMacro(x,y) x+y
@@ -3525,6 +3526,9 @@ int main()
 	std::cout << "\nTopic73, callbacks - funtion pointer & object (fast) revisit for lambda expression" << std::endl;
 	all_callbacksFunctionPtr_methods();
 	
+	std::cout << "\nTopic74, lambda expression in C++11" << std::endl;
+	all_lambda_expressions_methods();
+
 	/*
 	Topicxx: Microcontroller, bitwise operation, Register set/clear/reset
 	*/
