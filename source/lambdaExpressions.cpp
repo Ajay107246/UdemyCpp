@@ -9,6 +9,30 @@ struct Unnamed{
     return x+y;
     }
 };
+/*
+    74-6: function object using struct (internally by compiler) with any type using Template T
+*/
+template<typename T>
+struct UnnamedT
+{
+    T operator()(T x, T y)const{
+    return x + y;
+    }
+};
+
+/*
+        74-7, generic lambda expression works with any type (C++14)
+        if the lmbda expression does not throw an exception then 
+        specify noexcept specification -> expression does not throw an exception
+        auto sum_genericLambda = [](auto x, auto y)noexcept{}
+        OR
+        wanted to throw an exception, indicate that by noexcept(false)
+        auto sum_genericLambda = [](auto x, auto y)noexcept(false){}
+*/
+
+auto sum_genericLambda = [](auto x, auto y){
+    return x + y;
+};
 
 void all_lambda_expressions_methods()
 {
@@ -135,4 +159,20 @@ void all_lambda_expressions_methods()
     Unnamed uStrt;
     std::cout << "uStrt(7,2): " << uStrt(7,2) << std::endl;
 
+    /*
+        74-6, this above function object can only opearate on int
+        int can be replace with template T        
+    */
+    std::cout << "\nTopic74-6, function object for generic/any type" << std::endl;
+    UnnamedT<float> s_tStrt;
+    std::cout << "s_tStrt(7.5,2.5): " << s_tStrt(7.5,2.5) << std::endl;
+
+    //74-7: generic lambda expression
+    std::cout << "\nTopic74-7, generic lambda expression works with any type (C++14)!" << std::endl;   
+    std::cout << "sum_genericLambda(5.5f, 2.2f): " << sum_genericLambda(5.5f, 2.2f) << std::endl;   
+    /*
+        output:
+        Topic74-7, generic lambda expression works with any type (C++14)!
+        sum_genericLambda(5.5f, 2.2f): 7.7
+    */
 }
